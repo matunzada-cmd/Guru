@@ -21,14 +21,14 @@
     
     <style>
         body { font-family: 'Plus Jakarta Sans', sans-serif; background-color: #ffffff; }
-        .morph-page { transition: all 0.5s cubic-bezier(0.4, 0, 0.2, 1); opacity: 0; transform: scale(0.98) translateY(10px); display: none; }
+        .morph-page { transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1); opacity: 0; transform: scale(0.98) translateY(10px); display: none; }
         .morph-page.active { display: block; opacity: 1; transform: scale(1) translateY(0); }
     </style>
 </head>
 <body class="text-slate-800 antialiased overflow-x-hidden pb-20 lg:pb-0">
 
     <!-- ================= PAGES: LOGIN ================= -->
-    <div id="page-login" class="fixed inset-0 z-50 flex items-center justify-center bg-white transition-all duration-700 ease-in-out">
+    <div id="page-login" class="fixed inset-0 z-50 flex items-center justify-center bg-white">
         <div class="absolute inset-0 bg-gradient-to-tr from-blue-50 via-white to-indigo-50 opacity-70"></div>
         <div class="relative w-full max-w-md p-8 m-4 bg-white/80 backdrop-blur-md rounded-3xl border border-blue-100 shadow-2xl">
             
@@ -79,9 +79,8 @@
                     <h2 class="text-xs font-extrabold text-slate-900 tracking-tight uppercase line-clamp-1">ADMIN GURU MADIN SD NURIL ISLAM PACITAN</h2>
                     <div class="flex items-center gap-2">
                         <p class="text-[10px] text-blue-600 font-bold uppercase">TP 26/27 • </p>
-                        <!-- SELECT DROPDOWN SEKARANG DI-RENDER DINAMIS LEWAT JAVASCRIPT -->
                         <select id="global-kelas" onchange="changeGlobalKelas()" class="bg-blue-50 border border-blue-200 text-blue-700 text-[10px] font-extrabold rounded-md px-1 py-0.5 focus:outline-none">
-                            <!-- Diisi otomatis berdasarkan checkbox pilihan guru -->
+                            <!-- Dropdown dinamis -->
                         </select>
                     </div>
                 </div>
@@ -99,8 +98,10 @@
             </nav>
 
             <div class="flex items-center gap-2">
-                <span id="user-display-name" class="text-[10px] font-bold text-slate-700 bg-slate-100 px-3 py-1.5 rounded-lg border uppercase">GURU</span>
-                <button onclick="handleLogout()" class="text-slate-400 hover:text-red-500 p-1 text-sm flex items-center justify-center" title="Keluar"><i class="fa-solid fa-right-from-bracket text-base"></i></button>
+                <!-- KOTAK USERNAME DI SINI SEKARANG SUDAH DIHAPUS SEPENUHNYA AGAR TAMPILAN RESIK -->
+                <button onclick="handleLogout()" class="text-slate-400 hover:text-red-500 p-2 text-sm flex items-center justify-center transition-all" title="Keluar">
+                    <i class="fa-solid fa-right-from-bracket text-lg"></i>
+                </button>
             </div>
         </header>
 
@@ -199,7 +200,7 @@
                     </div>
                 </div>
 
-                <!-- ABSEN SISWA (4X PERTEMUAN MADIN) -->
+                <!-- ABSEN SISWA -->
                 <div id="tab-absen-siswa" class="morph-page space-y-4">
                     <div class="bg-white p-4 rounded-2xl border shadow-sm">
                         <div class="flex justify-between items-center mb-3">
@@ -242,7 +243,7 @@
                     </div>
                 </div>
 
-                <!-- JURNAL GURU (SINKRON SENIN - KAMIS) -->
+                <!-- JURNAL GURU -->
                 <div id="tab-jurnal" class="morph-page space-y-4">
                     <div class="bg-white p-4 rounded-2xl border shadow-sm">
                         <div class="flex justify-between items-center mb-3">
@@ -257,7 +258,7 @@
                 <div id="tab-biodata" class="morph-page space-y-6">
                     <div class="max-w-xl mx-auto space-y-4">
                         
-                        <!-- SEKSI BIODATA & PILIHAN KELAS YANG DIAMPUH -->
+                        <!-- SEKSI BIODATA -->
                         <div class="bg-white p-5 rounded-2xl border shadow-sm">
                             <h3 class="text-xs font-bold uppercase mb-4 text-slate-700"><i class="fa-solid fa-address-card text-blue-600 mr-1.5"></i>Profil & Biodata</h3>
                             <form id="form-biodata" onsubmit="saveBiodata(event)" class="space-y-4">
@@ -272,7 +273,6 @@
                                 <div><label class="block text-[11px] font-bold text-slate-600 mb-0.5">Alamat</label><textarea id="bio-alamat" rows="2" class="w-full px-3 py-1.5 bg-slate-50 border rounded-xl text-xs"></textarea></div>
                                 <div><label class="block text-[11px] font-bold text-slate-600 mb-0.5">Motto Hidup</label><input type="text" id="bio-motto" class="w-full px-3 py-1.5 bg-slate-50 border rounded-xl text-xs"></div>
                                 
-                                <!-- BARU: CHECKBOX OPSI MULTI-KELAS DINAMIS (1 SAMPAI 6) -->
                                 <div class="border-t pt-3">
                                     <label class="block text-[11px] font-bold text-blue-600 uppercase tracking-wider mb-2"><i class="fa-solid fa-layer-group mr-1"></i> Kelas Madin Yang Anda Diampu *</label>
                                     <div class="grid grid-cols-3 gap-2 bg-slate-50 p-3 rounded-xl border border-slate-100">
@@ -330,7 +330,6 @@
         let tabHistory = ['dashboard']; 
         let selectedAbsenBulan = new Date().getMonth() + 1; 
 
-        // Sediakan template database kosong untuk Kelas 1 s.d 6
         const defaultSiswa = {
             "Kelas 1": [], "Kelas 2": [], "Kelas 3": [],
             "Kelas 4": [
@@ -351,7 +350,7 @@
             alamat: "Pacitan, Jawa Timur",
             email: "abdulbasith@gmail.com",
             motto: "Mencerdaskan Generasi Bangsa Berakhlakul Karimah",
-            kelasAmpu: ["Kelas 4"] // Default awal mengampu kelas 4
+            kelasAmpu: ["Kelas 4"]
         };
 
         window.addEventListener('DOMContentLoaded', () => { checkAutoLogin(); });
@@ -365,7 +364,6 @@
             state.biodata = decryptData(localStorage.getItem('enc_biodata'), defaultBiodata);
             state.auth = decryptData(localStorage.getItem('enc_auth'), { username: "abdul basith", password: "123456" });
             
-            // Backup proteksi jika parameter kelasAmpu kosong
             if(!state.biodata.kelasAmpu || state.biodata.kelasAmpu.length === 0) {
                 state.biodata.kelasAmpu = ["Kelas 4"];
             }
@@ -379,9 +377,13 @@
                 document.getElementById('page-login').classList.add('hidden');
                 document.getElementById('main-app').classList.remove('hidden');
                 initApp();
-                buildKelasDropdown(); // Setel layout list menu atas berdasarkan pilihan di bio
+                buildKelasDropdown();
+                
+                tabHistory = ['dashboard'];
+                executeTabSwitch('dashboard', true);
             } else {
                 document.getElementById('page-login').classList.remove('hidden');
+                document.getElementById('main-app').classList.add('hidden');
             }
         }
 
@@ -395,24 +397,20 @@
             document.getElementById('settings-password').value = state.auth.password;
         }
 
-        // BARU: LOGIKA MEMBENTUK LIST DROPDOWN KELAS SECARA DINAMIS
         function buildKelasDropdown() {
             const selectEl = document.getElementById('global-kelas');
             selectEl.innerHTML = "";
-            
             const ampu = state.biodata.kelasAmpu || ["Kelas 4"];
             
             ampu.forEach(kls => {
                 selectEl.innerHTML += `<option value="${kls}">${kls.toUpperCase()}</option>`;
             });
 
-            // Set kelas aktif ke item pertama
             if(ampu.length > 0) {
                 currentKelas = ampu[0];
                 selectEl.value = currentKelas;
             }
             
-            // Sembunyikan select dropdown jika hanya mengampu 1 kelas tunggal agar rapi
             if(ampu.length <= 1) {
                 selectEl.style.display = "none";
             } else {
@@ -421,7 +419,6 @@
 
             document.querySelectorAll('.id-current-view-kelas').forEach(el => el.innerText = currentKelas);
             updateDashboardWidgets(); renderSiswaTable();
-            executeTabSwitch(tabHistory[tabHistory.length - 1], true);
         }
 
         function changeGlobalKelas() {
@@ -445,6 +442,9 @@
                 document.getElementById('main-app').classList.remove('hidden');
                 initApp(); 
                 buildKelasDropdown();
+                
+                tabHistory = ['dashboard'];
+                executeTabSwitch('dashboard', true);
             } else {
                 document.getElementById('loginError').classList.remove('hidden');
             }
@@ -454,6 +454,8 @@
             localStorage.removeItem('adm_session_active');
             document.getElementById('page-login').classList.remove('hidden');
             document.getElementById('main-app').classList.add('hidden');
+            document.getElementById('loginForm').reset();
+            document.getElementById('loginError').classList.add('hidden');
         }
 
         function saveKredensial(e) {
@@ -474,6 +476,10 @@
         }
 
         function switchTab(tabId) {
+            if (localStorage.getItem('adm_session_active') !== 'true') {
+                handleLogout();
+                return;
+            }
             if (tabHistory[tabHistory.length - 1] !== tabId) { tabHistory.push(tabId); }
             executeTabSwitch(tabId, true);
         }
@@ -512,9 +518,6 @@
             document.getElementById('dash-nama-guru').innerText = state.biodata.nama || '';
             document.getElementById('dash-nip-guru').innerText = `NIP: ${state.biodata.nip || '-'}`;
             document.getElementById('dash-motto-guru').innerText = `"${state.biodata.motto || ''}"`;
-            
-            const currentAuthName = state.auth.username || "GURU";
-            document.getElementById('user-display-name').innerText = currentAuthName.toUpperCase();
 
             document.getElementById('dash-label-absen').innerText = `Kehadiran ${getBulanName(selectedAbsenBulan)}`;
 
@@ -705,7 +708,6 @@
             localStorage.setItem('enc_jurnal', encryptData(state.jurnal)); 
         }
 
-        // AMBIL DATA SIMPANAN BIODATA KELAS DAN RE-CHECKED KOTAKNYA
         function fillBiodataForm() { 
             document.getElementById('bio-nama').value = state.biodata.nama || ''; 
             document.getElementById('bio-nip').value = state.biodata.nip || ''; 
@@ -714,7 +716,6 @@
             document.getElementById('bio-alamat').value = state.biodata.alamat || ''; 
             document.getElementById('bio-motto').value = state.biodata.motto || ''; 
             
-            // Tandai kembali checkbox kelas yang sebelumnya pernah disimpan
             const ampu = state.biodata.kelasAmpu || ["Kelas 4"];
             document.querySelectorAll('input[name="bio-kelas-ampu"]').forEach(chk => {
                 chk.checked = ampu.includes(chk.value);
@@ -730,13 +731,11 @@
             state.biodata.alamat = document.getElementById('bio-alamat').value.trim(); 
             state.biodata.motto = document.getElementById('bio-motto').value.trim(); 
             
-            // Ambil data checkbox terpilih
             let kelasTerpilih = [];
             document.querySelectorAll('input[name="bio-kelas-ampu"]:checked').forEach(chk => {
                 kelasTerpilih.push(chk.value);
             });
 
-            // Proteksi validasi minimal harus ada 1 kelas terpilih
             if(kelasTerpilih.length === 0) {
                 alert("Gagal menyimpan! Anda wajib mencentang minimal 1 kelas yang Anda ampu.");
                 return;
@@ -744,10 +743,8 @@
 
             state.biodata.kelasAmpu = kelasTerpilih;
             saveToLocal('biodata'); 
-            
             alert("Biodata & Hak Akses Kelas Berhasil Diperbarui!"); 
-            
-            buildKelasDropdown(); // Susun ulang layout dropdown atas sesuai setelan kelas baru
+            buildKelasDropdown(); 
             switchTab('dashboard'); 
         }
     </script>
