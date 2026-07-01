@@ -383,15 +383,7 @@
         function decryptData(encryptedStr, fallback) {
             if (!encryptedStr) return fallback;
             try { 
-                let parsed = JSON.parse(decodeURIComponent(atob(encryptedStr).split('').reverse().join('')));
-                if(parsed && typeof parsed === 'object') {
-                    for (let kls in parsed) {
-                        if(Array.isArray(parsed[kls])) {
-                            parsed[kls].sort((a, b) => a.nama.localeCompare(b.nama));
-                        }
-                    }
-                }
-                return parsed;
+                return JSON.parse(decodeURIComponent(atob(encryptedStr).split('').reverse().join('')));
             } catch (e) { return fallback; }
         }
 
@@ -464,13 +456,19 @@
             }
         });
 
+        /* FIX KUNCI MIGRASI DATA: Membaca memori HP riil terlebih dahulu tanpa menimpa data */
         function loadSessionData() {
-            state.siswa = decryptData(localStorage.getItem('enc_siswa'), defaultSiswa);
+            let localSiswa = localStorage.getItem('enc_siswa');
+            state.siswa = localSiswa ? decryptData(localSiswa, defaultSiswa) : defaultSiswa;
+            
             state.absenSiswa = decryptData(localStorage.getItem('enc_absenSiswa'), {});
             state.nilai = decryptData(localStorage.getItem('enc_nilai'), {});
             state.jurnal = decryptData(localStorage.getItem('enc_jurnal'), {});
             state.agendaCustom = decryptData(localStorage.getItem('enc_agendaCustom'), []);
-            state.biodata = decryptData(localStorage.getItem('enc_biodata'), defaultBiodata);
+            
+            let localBio = localStorage.getItem('enc_biodata');
+            state.biodata = localBio ? decryptData(localBio, defaultBiodata) : defaultBiodata;
+            
             state.auth = decryptData(localStorage.getItem('enc_auth'), { username: "abdul basith", password: "123456" });
             
             if(!state.biodata.kelasAmpu || state.biodata.kelasAmpu.length === 0) {
@@ -479,6 +477,7 @@
             sortSiswaAllKelas();
         }
 
+        /* Proses pengurutan dipisah mandiri agar tidak merusak enkripsi data profil */
         function sortSiswaAllKelas() {
             if(state.siswa && typeof state.siswa === 'object') {
                 for (let kls in state.siswa) {
@@ -528,7 +527,13 @@
             selectEl.innerHTML = "";
             const ampu = state.biodata.kelasAmpu || ["Kelas 4"];
             ampu.forEach(kls => { selectEl.innerHTML += `<option value="${kls}">${kls.toUpperCase()}</option>`; });
-            if(ampu.length > 0) { currentKelas = ampu[0]; selectEl.value = currentKelas; }
+            
+            if(ampu.length > 0) { 
+                if(!ampu.includes(currentKelas)) {
+                    currentKelas = ampu[0];
+                }
+                selectEl.value = currentKelas; 
+            }
             selectEl.style.display = ampu.length <= 1 ? "none" : "inline-block";
             document.querySelectorAll('.id-current-view-kelas').forEach(el => el.innerText = currentKelas);
             updateDashboardWidgets();
@@ -852,7 +857,6 @@
             renderNilaiSiswa();
         }
 
-        // AMAN DARI DUPLIKASI DATA SAAT EKSPOR
         function downloadRekapNilaiCSV() {
             const currentList = state.siswa[currentKelas] || []; if(currentList.length === 0) return;
             const matpel = document.getElementById('nilai-matpel').value;
