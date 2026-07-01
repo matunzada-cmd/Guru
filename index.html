@@ -10,7 +10,7 @@
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Madin Nuris">
     <link rel="icon" type="image/png" href="https://lh3.googleusercontent.com/d/18-4v4Q_Xq8DaE2xd_tdW-UmjG4NjSt3b">
-    <link rel="apple-touch-icon" href="https://lh3.googleusercontent.com/d/18-4v4Q_Xq8DaE2xd_tdW-UmjG4NjSt3b">
+    <link class="apple-touch-icon" href="https://lh3.googleusercontent.com/d/18-4v4Q_Xq8DaE2xd_tdW-UmjG4NjSt3b">
 
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4" crossorigin="anonymous"></script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -379,6 +379,7 @@
 
     <script>
         function encryptData(data) { return btoa(encodeURIComponent(JSON.stringify(data)).split('').reverse().join('')); }
+        
         function decryptData(encryptedStr, fallback) {
             if (!encryptedStr) return fallback;
             try { 
@@ -566,7 +567,6 @@
             document.getElementById('main-app').classList.add('hidden');
         }
 
-        // NAVIGATION SYSTEM
         function switchTab(tabId) {
             if (localStorage.getItem('adm_session_active') !== 'true') { handleLogout(); return; }
             if (activeTab !== tabId) {
@@ -852,6 +852,7 @@
             renderNilaiSiswa();
         }
 
+        // AMAN DARI DUPLIKASI DATA SAAT EKSPOR
         function downloadRekapNilaiCSV() {
             const currentList = state.siswa[currentKelas] || []; if(currentList.length === 0) return;
             const matpel = document.getElementById('nilai-matpel').value;
