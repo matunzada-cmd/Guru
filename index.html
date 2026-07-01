@@ -68,7 +68,7 @@
 
     <!-- ================= MAIN APP LAYOUT ================= -->
     <div id="main-app" class="min-h-screen flex flex-col hidden">
-        <!-- HEADER UTAMA (TOMBOL KEMBALI DIHAPUS AGAR BERSIH) -->
+        <!-- HEADER UTAMA -->
         <header class="bg-white border-b border-slate-200 px-4 py-3 sticky top-0 z-40 flex items-center justify-between shadow-sm">
             <div class="flex items-center gap-2">
                 <img src="https://lh3.googleusercontent.com/d/18-4v4Q_Xq8DaE2xd_tdW-UmjG4NjSt3b" alt="Logo" class="w-8 h-8 object-contain">
@@ -81,7 +81,6 @@
                 </div>
             </div>
             <div class="flex items-center gap-1">
-                <!-- Tombol Kembali Manual dihapus agar layar lega sesuai instruksi Bapak -->
                 <button onclick="handleLogout()" class="text-slate-400 hover:text-red-500 p-2 text-sm flex items-center justify-center transition-all" title="Keluar">
                     <i class="fa-solid fa-right-from-bracket text-lg"></i>
                 </button>
@@ -118,7 +117,7 @@
                     </div>
                 </div>
 
-                <!-- GRID KUBUS MENU UTAMA (GENAP 6 KUBUS SIMETRIS) -->
+                <!-- GRID KUBUS MENU UTAMA -->
                 <div class="space-y-2">
                     <p class="text-[11px] font-bold uppercase tracking-wider text-slate-400 px-1">Pilihan Menu Administrasi</p>
                     <div class="grid grid-cols-2 sm:grid-cols-3 gap-3">
@@ -238,12 +237,17 @@
             <!-- 3. HALAMAN DALAM: PRESENSI SISWA -->
             <div id="tab-presensi-siswa" class="morph-page space-y-5">
                 <div class="bg-white p-4 rounded-2xl border border-green-100 shadow-sm">
-                    <div class="flex justify-between items-center mb-4 pb-2 border-b">
+                    <div class="flex flex-wrap justify-between items-center gap-2 mb-4 pb-2 border-b">
                         <h3 class="text-xs font-bold uppercase text-slate-700">Tabel Presensi Mingguan (<span class="text-green-600 id-current-view-kelas">-</span>)</h3>
-                        <select id="absen-siswa-bulan" onchange="handleBulanAbsenChange()" class="px-2 py-1 bg-green-50 border border-green-200 rounded-lg text-xs font-bold text-green-700">
-                            <option value="7">Juli</option><option value="8">Agustus</option><option value="9">September</option><option value="10">Oktober</option><option value="11">November</option><option value="12">Desember</option>
-                            <option value="1">Januari</option><option value="2">Februari</option><option value="3">Maret</option><option value="4">April</option><option value="5">Mei</option><option value="6">Juni</option>
-                        </select>
+                        <div class="flex items-center gap-2">
+                            <select id="absen-siswa-bulan" onchange="handleBulanAbsenChange()" class="px-2 py-1.5 bg-green-50 border border-green-200 rounded-lg text-xs font-bold text-green-700 focus:outline-none">
+                                <option value="7">Juli</option><option value="8">Agustus</option><option value="9">September</option><option value="10">Oktober</option><option value="11">November</option><option value="12">Desember</option>
+                                <option value="1">Januari</option><option value="2">Februari</option><option value="3">Maret</option><option value="4">April</option><option value="5">Mei</option><option value="6">Juni</option>
+                            </select>
+                            <button onclick="downloadRekapAbsenCSV()" class="px-3 py-1.5 bg-teal-600 hover:bg-teal-700 text-white font-bold rounded-lg text-xs transition-all">
+                                <i class="fa-solid fa-file-excel mr-1"></i> Ekspor Absen
+                            </button>
+                        </div>
                     </div>
                     <div class="overflow-x-auto">
                         <table class="w-full text-left text-xs">
@@ -281,7 +285,7 @@
                             <option value="AKIDAH AKHLAK">AKIDAH AKHLAK</option>
                         </select>
                         <button onclick="downloadRekapNilaiCSV()" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-lg text-xs transition-all">
-                            <i class="fa-solid fa-file-excel mr-1"></i> Ekspor
+                            <i class="fa-solid fa-file-excel mr-1"></i> Ekspor Nilai
                         </button>
                     </div>
                 </div>
@@ -394,12 +398,22 @@
         </main>
     </div>
 
-    <!-- ================= JAVASCRIPT SYSTEM UTANPA POTONGAN ================= -->
+    <!-- ================= JAVASCRIPT SYSTEM ================= -->
     <script>
         function encryptData(data) { return btoa(encodeURIComponent(JSON.stringify(data)).split('').reverse().join('')); }
         function decryptData(encryptedStr, fallback) {
             if (!encryptedStr) return fallback;
-            try { return JSON.parse(decodeURIComponent(atob(encryptedStr).split('').reverse().join(''))); } catch (e) { return fallback; }
+            try { 
+                let parsed = JSON.parse(decodeURIComponent(atob(encryptedStr).split('').reverse().join('')));
+                if(parsed && typeof parsed === 'object') {
+                    for (let kls in parsed) {
+                        if(Array.isArray(parsed[kls])) {
+                            parsed[kls].sort((a, b) => a.nama.localeCompare(b.nama));
+                        }
+                    }
+                }
+                return parsed;
+            } catch (e) { return fallback; }
         }
 
         let state = { siswa: {}, absenSiswa: {}, nilai: {}, jurnal: {}, agendaCustom: [], biodata: {}, auth: {} };
@@ -436,7 +450,7 @@
             { tanggal: "2027-02-09", nama: "Perkiraan Libur Awal Puasa Ramadhan 1448 H", tipe: "Libur Islam" },
             { tanggal: "2027-03-08", nama: "Hari Raya Nyepi (Tahun Baru Saka 1949)", tipe: "Nasional" },
             { tanggal: "2027-03-09", nama: "Hari Raya Idul Fitri 1448 Hijriah (1 Syawal)", tipe: "Libur Islam" },
-            { tanggal: "2027-03-10", nama: "Cuti Bersama Hari Raya Idul Fitri 1448 H", tipe: "Libur Islam" },
+            { tanggal: "2027-03-10", text: "", nama: "Cuti Bersama Hari Raya Idul Fitri 1448 H", tipe: "Libur Islam" },
             { tanggal: "2027-03-15", nama: "Perkiraan Rentang Penilaian Tengah Semester (PTS) Genap", tipe: "Dinas/Akademik" },
             { tanggal: "2027-03-26", nama: "Wafat Yesus Kristus", tipe: "Nasional" },
             { tanggal: "2027-05-01", nama: "Hari Buruh Internasional", tipe: "Nasional" },
@@ -461,7 +475,6 @@
 
         window.addEventListener('DOMContentLoaded', () => { checkAutoLogin(); });
 
-        // SISTEM INTEGRASI NAVIGASI USAP DAN TOMBOL BACK HP
         window.addEventListener('popstate', (event) => {
             if (localStorage.getItem('adm_session_active') === 'true') {
                 if (event.state && event.state.tab) {
@@ -484,9 +497,24 @@
             if(!state.biodata.kelasAmpu || state.biodata.kelasAmpu.length === 0) {
                 state.biodata.kelasAmpu = ["Kelas 4"];
             }
+            sortSiswaAllKelas();
         }
 
-        function saveToLocal(key) { localStorage.setItem(`enc_${key}`, encryptData(state[key])); updateDashboardWidgets(); }
+        function sortSiswaAllKelas() {
+            if(state.siswa && typeof state.siswa === 'object') {
+                for (let kls in state.siswa) {
+                    if(Array.isArray(state.siswa[kls])) {
+                        state.siswa[kls].sort((a, b) => a.nama.localeCompare(b.nama));
+                    }
+                }
+            }
+        }
+
+        function saveToLocal(key) { 
+            if(key === 'siswa') sortSiswaAllKelas();
+            localStorage.setItem(`enc_${key}`, encryptData(state[key])); 
+            updateDashboardWidgets(); 
+        }
 
         function checkAutoLogin() {
             if (localStorage.getItem('adm_session_active') === 'true') {
@@ -495,7 +523,6 @@
                 document.getElementById('main-app').classList.remove('hidden');
                 initApp();
                 buildKelasDropdown();
-                // Set awal history agar ketika di dashboard, usap back tidak langsung keluar web kosong
                 history.replaceState({ tab: 'dashboard' }, '');
                 executeTabSwitch('dashboard', true);
             } else {
@@ -561,11 +588,9 @@
             document.getElementById('main-app').classList.add('hidden');
         }
 
-        // FUNGSI UTAMA PINDAH TAB & DAFTAR HISTORY ANDROID
         function switchTab(tabId) {
             if (localStorage.getItem('adm_session_active') !== 'true') { handleLogout(); return; }
             if (activeTab !== tabId) {
-                // Mendaftarkan perubahan tab ke system history HP pengguna
                 history.pushState({ tab: tabId }, '');
                 executeTabSwitch(tabId, true);
             }
@@ -604,9 +629,9 @@
 
             const tahun = (selectedAbsenBulan >= 7) ? 2026 : 2027;
             let totalHadir = 0, totalMangkir = 0; 
-            list.forEach((siswaItem, sIdx) => {
+            list.forEach((siswaItem) => {
                 for(let m=1; m<=4; m++) { 
-                    let key = `${currentKelas}_${sIdx}_${tahun}_${selectedAbsenBulan}_M${m}`;
+                    let key = `${currentKelas}_${siswaItem.nama}_${tahun}_${selectedAbsenBulan}_M${m}`;
                     let currentVal = state.absenSiswa[key] || 'H';
                     currentVal === 'H' ? totalHadir++ : totalMangkir++;
                 }
@@ -645,9 +670,17 @@
             const obj = { nama, jk };
             
             if(!state.siswa[currentKelas]) state.siswa[currentKelas] = [];
-            idX === "" ? state.siswa[currentKelas].push(obj) : state.siswa[currentKelas][idX] = obj;
+            
+            if(idX === "") {
+                state.siswa[currentKelas].push(obj);
+            } else {
+                state.siswa[currentKelas][idX] = obj;
+            }
+            
             state.siswa[currentKelas].sort((a, b) => a.nama.localeCompare(b.nama));
-            saveToLocal('siswa'); resetSiswaForm(); renderDataSiswa();
+            saveToLocal('siswa'); 
+            resetSiswaForm(); 
+            renderDataSiswa();
         }
 
         function editSiswa(index) {
@@ -740,11 +773,11 @@
                 let rowHTML = `
                 <tr class="hover:bg-green-50/20 bg-white">
                     <td class="p-2 text-center border-r font-bold">${sIdx+1}</td>
-                    <td class="p-2 border-r font-bold text-slate-800">${siswaItem.nama}</td>`;
+                    <td class="p-2 border-r font-bold text-slate-800 line-clamp-1">${siswaItem.nama}</td>`;
                 
                 let rekap = { H:0, S:0, I:0, A:0 };
                 for(let m=1; m<=4; m++) {
-                    let key = `${currentKelas}_${sIdx}_${tahun}_${selectedAbsenBulan}_M${m}`; 
+                    let key = `${currentKelas}_${siswaItem.nama}_${tahun}_${selectedAbsenBulan}_M${m}`; 
                     let currentVal = state.absenSiswa[key] || 'H'; 
                     rekap[currentVal]++;
                     
@@ -755,7 +788,7 @@
                     
                     rowHTML += `
                     <td class="p-1 border-r text-center">
-                        <select onchange="saveAbsenSiswa(${sIdx}, ${tahun}, ${selectedAbsenBulan}, ${m}, this)" class="${bgStyle} w-11 border rounded-lg p-1 text-center font-extrabold text-[11px] focus:outline-none transition-all cursor-pointer">
+                        <select onchange="saveAbsenSiswa('${siswaItem.nama}', ${tahun}, ${selectedAbsenBulan}, ${m}, this)" class="${bgStyle} w-11 border rounded-lg p-1 text-center font-extrabold text-[11px] focus:outline-none transition-all cursor-pointer">
                             <option value="H" ${currentVal==='H'?'selected':''}>H</option>
                             <option value="S" ${currentVal==='S'?'selected':''}>S</option>
                             <option value="I" ${currentVal==='I'?'selected':''}>I</option>
@@ -773,13 +806,46 @@
             });
         }
 
-        function saveAbsenSiswa(sIdx, y, m, mingguKe, element) { 
+        function saveAbsenSiswa(namaSiswa, y, m, mingguKe, element) { 
             let val = element.value;
-            let key = `${currentKelas}_${sIdx}_${y}_${m}_M${mingguKe}`; 
+            let key = `${currentKelas}_${namaSiswa}_${y}_${m}_M${mingguKe}`; 
             state.absenSiswa[key] = val; 
             localStorage.setItem('enc_absenSiswa', encryptData(state.absenSiswa));
             updateDashboardWidgets(); 
             renderAbsenSiswa(); 
+        }
+
+        function downloadRekapAbsenCSV() {
+            const currentList = state.siswa[currentKelas] || []; 
+            if(currentList.length === 0) { alert("Belum ada data siswa."); return; }
+            
+            const namaBulan = getBulanName(selectedAbsenBulan);
+            const tahun = (selectedAbsenBulan >= 7) ? 2026 : 2027;
+            
+            let csvContent = "\uFEFFNo,Nama Murid,Minggu 1,Minggu 2,Minggu 3,Minggu 4,Total Hadir (H),Total Sakit (S),Total Izin (I),Total Alfa (A)\n";
+            
+            currentList.forEach((siswaItem, sIdx) => {
+                let rekap = { H:0, S:0, I:0, A:0 };
+                let m1 = "", m2 = "", m3 = "", m4 = "";
+                
+                for(let m=1; m<=4; m++) {
+                    let key = `${currentKelas}_${siswaItem.nama}_${tahun}_${selectedAbsenBulan}_M${m}`;
+                    let val = state.absenSiswa[key] || 'H';
+                    rekap[val]++;
+                    if(m === 1) m1 = val;
+                    if(m === 2) m2 = val;
+                    if(m === 3) m3 = val;
+                    if(m === 4) m4 = val;
+                }
+                
+                csvContent += `${sIdx + 1},"${siswaItem.nama}",${m1},${m2},${m3},${m4},${rekap.H},${rekap.S},${rekap.I},${rekap.A}\n`;
+            });
+            
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement("a"); 
+            link.href = URL.createObjectURL(blob);
+            link.setAttribute("download", `Presensi_${currentKelas}_Bulan_${namaBulan}_${tahun}.csv`); 
+            link.click();
         }
 
         function renderNilaiSiswa() {
@@ -788,27 +854,25 @@
             const currentList = state.siswa[currentKelas] || [];
             if(currentList.length === 0) { tbody.innerHTML = `<tr><td colspan="8" class="p-4 text-center italic text-slate-400">Kosong. Isi data murid terlebih dahulu.</td></tr>`; return; }
             currentList.forEach((siswaItem, sIdx) => {
-                let key = `${currentKelas}_${sIdx}_${matpel}`; let scores = state.nilai[key] || { h1:'', h2:'', h3:'', mid:'', pas:'' };
+                let key = `${currentKelas}_${siswaItem.nama}_${matpel}`; let scores = state.nilai[key] || { h1:'', h2:'', h3:'', mid:'', pas:'' };
                 let h1 = parseFloat(scores.h1) || 0; let h2 = parseFloat(scores.h2) || 0; let h3 = parseFloat(scores.h3) || 0;
                 let avgHarian = (h1 + h2 + h3) / ((scores.h1?1:0) + (scores.h2?1:0) + (scores.h3?1:0) || 1);
                 let nilaiRaport = Math.round((avgHarian + (parseFloat(scores.mid)||0) + (parseFloat(scores.pas)||0)) / 3);
-                tbody.innerHTML += `<tr class="bg-white"><td class="p-2 text-center border-r">${sIdx+1}</td><td class="p-2 font-semibold border-r truncate max-w-[110px]">${siswaItem.nama}</td><td><input type="number" value="${scores.h1}" oninput="saveNilai(${sIdx}, '${matpel}', 'h1', this.value)" class="w-full text-center focus:outline-none text-xs" placeholder="-"></td><td><input type="number" value="${scores.h2}" oninput="saveNilai(${sIdx}, '${matpel}', 'h2', this.value)" class="w-full text-center focus:outline-none text-xs" placeholder="-"></td><td><input type="number" value="${scores.h3}" oninput="saveNilai(${sIdx}, '${matpel}', 'h3', this.value)" class="w-full text-center focus:outline-none text-xs" placeholder="-"></td><td><input type="number" value="${scores.mid}" oninput="saveNilai(${sIdx}, '${matpel}', 'mid', this.value)" class="w-full text-center focus:outline-none text-xs" placeholder="-"></td><td><input type="number" value="${scores.pas}" oninput="saveNilai(${sIdx}, '${matpel}', 'pas', this.value)" class="w-full text-center focus:outline-none text-xs" placeholder="-"></td><td class="p-2 text-center bg-green-50 text-green-700 font-bold" id="raport-${sIdx}">${nilaiRaport}</td></tr>`;
+                tbody.innerHTML += `<tr class="bg-white"><td class="p-2 text-center border-r">${sIdx+1}</td><td class="p-2 font-semibold border-r truncate max-w-[110px]">${siswaItem.nama}</td><td><input type="number" value="${scores.h1}" oninput="saveNilai('${siswaItem.nama}', '${matpel}', 'h1', this.value)" class="w-full text-center focus:outline-none text-xs" placeholder="-"></td><td><input type="number" value="${scores.h2}" oninput="saveNilai('${siswaItem.nama}', '${matpel}', 'h2', this.value)" class="w-full text-center focus:outline-none text-xs" placeholder="-"></td><td><input type="number" value="${scores.h3}" oninput="saveNilai('${siswaItem.nama}', '${matpel}', 'h3', this.value)" class="w-full text-center focus:outline-none text-xs" placeholder="-"></td><td><input type="number" value="${scores.mid}" oninput="saveNilai('${siswaItem.nama}', '${matpel}', 'mid', this.value)" class="w-full text-center focus:outline-none text-xs" placeholder="-"></td><td><input type="number" value="${scores.pas}" oninput="saveNilai('${siswaItem.nama}', '${matpel}', 'pas', this.value)" class="w-full text-center focus:outline-none text-xs" placeholder="-"></td><td class="p-2 text-center bg-green-50 text-green-700 font-bold" id="raport-${sIdx}">${nilaiRaport}</td></tr>`;
             });
         }
         
-        function saveNilai(sIdx, matpel, field, val) {
-            let key = `${currentKelas}_${sIdx}_${matpel}`; if(!state.nilai[key]) state.nilai[key] = { h1:'', h2:'', h3:'', mid:'', pas:'' }; state.nilai[key][field] = val; saveToLocal('nilai');
-            let scores = state.nilai[key]; let avg = ((parseFloat(scores.h1)||0) + (parseFloat(scores.h2)||0) + (parseFloat(scores.h3)||0)) / ((scores.h1?1:0) + (scores.h2?1:0) + (scores.h3?1:0) || 1);
-            document.getElementById(`raport-${sIdx}`).innerText = Math.round((avg + (parseFloat(scores.mid)||0) + (parseFloat(scores.pas)||0)) / 3);
+        function saveNilai(namaSiswa, matpel, field, val) {
+            let key = `${currentKelas}_${namaSiswa}_${matpel}`; if(!state.nilai[key]) state.nilai[key] = { h1:'', h2:'', h3:'', mid:'', pas:'' }; state.nilai[key][field] = val; saveToLocal('nilai');
+            renderNilaiSiswa();
         }
 
-        // DOWNLOAD REKAP NILAI EXCEL (CSV)
         function downloadRekapNilaiCSV() {
             const currentList = state.siswa[currentKelas] || []; if(currentList.length === 0) return;
             const matpel = document.getElementById('nilai-matpel').value;
             let csvContent = "\uFEFFNo,Nama Siswa,Harian 1,Harian 2,Harian 3,Rata Harian,MID,PAS,Nilai Raport\n";
             currentList.forEach((siswaItem, sIdx) => {
-                let key = `${currentKelas}_${sIdx}_${matpel}`; let scores = state.nilai[key] || { h1:'', h2:'', h3:'', mid:'', pas:'' };
+                let key = `${currentKelas}_${siswaItem.nama}_${matpel}`; let scores = state.nilai[key] || { h1:'', h2:'', h3:'', mid:'', pas:'' };
                 let j = (scores.h1?1:0) + (scores.h2?1:0) + (scores.h3?1:0);
                 let avg = j > 0 ? Math.round(((parseFloat(scores.h1)||0)+(parseFloat(scores.h2)||0)+(parseFloat(scores.h3)||0))/j) : 0;
                 let r = Math.round((avg + (parseFloat(scores.mid)||0) + (parseFloat(scores.pas)||0)) / 3);
