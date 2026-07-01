@@ -98,7 +98,6 @@
             </nav>
 
             <div class="flex items-center gap-2">
-                <!-- KOTAK USERNAME DI SINI SEKARANG SUDAH DIHAPUS SEPENUHNYA AGAR TAMPILAN RESIK -->
                 <button onclick="handleLogout()" class="text-slate-400 hover:text-red-500 p-2 text-sm flex items-center justify-center transition-all" title="Keluar">
                     <i class="fa-solid fa-right-from-bracket text-lg"></i>
                 </button>
@@ -214,14 +213,22 @@
                     </div>
                 </div>
 
-                <!-- NILAI SISWA -->
+                <!-- NILAI SISWA (MAPEL PRAKTEK IBADAH BERHASIL DITAMBAHKAN DI PALING ATAS) -->
                 <div id="tab-nilai" class="morph-page space-y-4">
                     <div class="bg-white p-4 rounded-2xl border shadow-sm">
                         <div class="flex flex-wrap justify-between items-center gap-2 mb-3">
                             <h3 class="text-xs font-bold uppercase text-slate-700">Rekap Nilai (<span class="text-blue-600 id-current-view-kelas">Kelas -</span>)</h3>
                             <div class="flex items-center gap-1.5">
                                 <select id="nilai-matpel" onchange="renderNilaiSiswa()" class="px-2 py-1 bg-slate-50 border rounded-lg text-xs font-bold">
-                                    <option value="ASWAJA">ASWAJA</option><option value="AL QUR.AN HADIST">AL QUR'AN HADIST</option><option value="AKIDAH AKHLAK">AKIDAH AKHLAK</option><option value="SEJARAH KEBUDAYAAN ISLAM">SKI</option><option value="BAHASA ARAB">BAHASA ARAB</option><option value="MABADI FIQIYAH">MABADI FIQIYAH</option><option value="FIQIH">FIQIH</option>
+                                    <option value="PRAKTEK IBADAH">PRAKTEK IBADAH</option>
+                                    <option value="TAJWID">TAJWID</option>
+                                    <option value="FIQIH">FIQIH</option>
+                                    <option value="ASWAJA">ASWAJA</option>
+                                    <option value="AL QUR.AN HADIST">AL QUR'AN HADIST</option>
+                                    <option value="AKIDAH AKHLAK">AKIDAH AKHLAK</option>
+                                    <option value="SEJARAH KEBUDAYAAN ISLAM">SKI</option>
+                                    <option value="BAHASA ARAB">BAHASA ARAB</option>
+                                    <option value="MABADI FIQIYAH">MABADI FIQIYAH</option>
                                 </select>
                                 <button onclick="downloadRekapNilaiCSV()" class="px-3 py-1.5 bg-emerald-600 hover:bg-emerald-700 text-white font-bold rounded-lg text-xs shadow-sm transition-all">
                                     <i class="fa-solid fa-file-excel mr-1"></i> Unduh CSV
@@ -529,9 +536,9 @@
                 list.forEach((siswaItem, sIdx) => {
                     for(let m=1; m<=4; m++) { 
                         let key = `${currentKelas}_${sIdx}_${tahun}_${selectedAbsenBulan}_M${m}`;
-                        let currentVal = state.absenSiswa[key] || '.'; 
+                        let currentVal = state.absenSiswa[key] || 'H';
                         
-                        if(currentVal === '.') {
+                        if(currentVal === 'H') {
                             totalHadir++;
                         } else if(currentVal === 'S' || currentVal === 'I' || currentVal === 'A') {
                             totalMangkir++;
@@ -590,35 +597,62 @@
             
             let headerHTML = `<th class="p-2 text-center border-r w-10">No</th><th class="p-2 border-r">Nama Murid</th>`;
             for(let i=1; i<=4; i++) { headerHTML += `<th class="p-2 text-center border-r w-16">Mg ${i}</th>`; }
-            headerHTML += `<th class="text-center w-10">S</th><th class="text-center w-10">I</th><th class="text-center w-10">A</th>`; 
+            headerHTML += `<th class="text-center w-10 text-emerald-600 font-bold">H</th><th class="text-center w-10 text-blue-600 font-bold">S</th><th class="text-center w-10 text-amber-500 font-bold">I</th><th class="text-center w-10 text-red-500 font-bold">A</th>`; 
             header.innerHTML = headerHTML;
             
             const tbody = document.getElementById('absen-siswa-body'); tbody.innerHTML = ""; 
             const currentList = state.siswa[currentKelas] || [];
             
-            if(currentList.length === 0) { tbody.innerHTML = `<tr><td colspan="7" class="p-4 text-center italic text-slate-400">Kosong. Isi data murid terlebih dahulu.</td></tr>`; return; }
+            if(currentList.length === 0) { tbody.innerHTML = `<tr><td colspan="8" class="p-4 text-center italic text-slate-400">Kosong. Isi data murid terlebih dahulu.</td></tr>`; return; }
 
             currentList.forEach((siswaItem, sIdx) => {
                 let rowHTML = `<tr><td class="p-2 text-center border-r font-bold">${sIdx+1}</td><td class="p-2 font-semibold border-r truncate max-w-[120px]">${siswaItem.nama}</td>`;
-                let rekap = { S:0, I:0, A:0 };
+                let rekap = { H:0, S:0, I:0, A:0 };
                 
                 for(let m=1; m<=4; m++) {
                     let key = `${currentKelas}_${sIdx}_${tahun}_${selectedAbsenBulan}_M${m}`; 
-                    let currentVal = state.absenSiswa[key] || '.'; 
-                    if(currentVal !== '.') rekap[currentVal]++;
+                    let currentVal = state.absenSiswa[key] || 'H'; 
+                    rekap[currentVal]++;
                     
-                    rowHTML += `<td class="p-1 border-r text-center"><select onchange="saveAbsenSiswa(${sIdx}, ${tahun}, ${selectedAbsenBulan}, ${m}, this.value)" class="bg-slate-50 border border-slate-200 rounded p-1 text-center font-bold focus:outline-none"><option value="." ${currentVal==='.'?'selected':''}>.</option><option value="S" ${currentVal==='S'?'selected':''}>S</option><option value="I" ${currentVal==='I'?'selected':''}>I</option><option value="A" ${currentVal==='A'?'selected':''}>A</option></select></td>`;
+                    let bgStyle = "bg-emerald-50 border-emerald-200 text-emerald-700"; 
+                    if(currentVal === 'S') bgStyle = "bg-blue-50 border-blue-200 text-blue-700";
+                    if(currentVal === 'I') bgStyle = "bg-amber-50 border-amber-200 text-amber-700";
+                    if(currentVal === 'A') bgStyle = "bg-red-50 border-red-200 text-red-700";
+                    
+                    rowHTML += `
+                    <td class="p-1 border-r text-center">
+                        <select onchange="saveAbsenSiswa(${sIdx}, ${tahun}, ${selectedAbsenBulan}, ${m}, this)" class="${bgStyle} w-12 border rounded-xl p-1 text-center font-extrabold focus:outline-none transition-all cursor-pointer">
+                            <option value="H" ${currentVal==='H'?'selected':''}>H</option>
+                            <option value="S" ${currentVal==='S'?'selected':''}>S</option>
+                            <option value="I" ${currentVal==='I'?'selected':''}>I</option>
+                            <option value="A" ${currentVal==='A'?'selected':''}>A</option>
+                        </select>
+                    </td>`;
                 }
-                rowHTML += `<td class="text-center font-bold text-red-500">${rekap.S}</td><td class="text-center font-bold text-amber-500">${rekap.I}</td><td class="text-center font-bold text-slate-500">${rekap.A}</td></tr>`; 
+                rowHTML += `
+                    <td class="text-center font-bold text-emerald-600 bg-emerald-50/20">${rekap.H}</td>
+                    <td class="text-center font-bold text-blue-600 bg-blue-50/20">${rekap.S}</td>
+                    <td class="text-center font-bold text-amber-500 bg-amber-50/20">${rekap.I}</td>
+                    <td class="text-center font-bold text-red-500 bg-red-50/20">${rekap.A}</td>
+                </tr>`; 
                 tbody.innerHTML += rowHTML;
             });
         }
         
-        function saveAbsenSiswa(sIdx, y, m, mingguKe, value) { 
+        function saveAbsenSiswa(sIdx, y, m, mingguKe, element) { 
+            let val = element.value;
             let key = `${currentKelas}_${sIdx}_${y}_${m}_M${mingguKe}`; 
-            state.absenSiswa[key] = value; 
+            state.absenSiswa[key] = val; 
             localStorage.setItem('enc_absenSiswa', encryptData(state.absenSiswa));
+            
+            element.className = "w-12 border rounded-xl p-1 text-center font-extrabold focus:outline-none transition-all cursor-pointer";
+            if(val === 'H') element.classList.add('bg-emerald-50', 'border-emerald-200', 'text-emerald-700');
+            if(val === 'S') element.classList.add('bg-blue-50', 'border-blue-200', 'text-blue-700');
+            if(val === 'I') element.classList.add('bg-amber-50', 'border-amber-200', 'text-amber-700');
+            if(val === 'A') element.classList.add('bg-red-50', 'border-red-200', 'text-red-700');
+
             updateDashboardWidgets(); 
+            renderAbsenSiswa(); 
         }
 
         function renderNilaiSiswa() {
