@@ -88,7 +88,7 @@
 
     <!-- ================= MAIN APP LAYOUT ================= -->
     <div id="main-app" class="min-h-screen flex flex-col hidden">
-        <!-- HEADER UTAMA (TOMBOL KEMBALI MANUAL DIHAPUS TOTAL) -->
+        <!-- HEADER UTAMA -->
         <header class="bg-white border-b border-slate-200 px-4 py-3 sticky top-0 z-40 flex items-center justify-between shadow-sm">
             <div class="flex items-center gap-2">
                 <button onclick="switchTab('dashboard')" class="cursor-pointer">
@@ -197,7 +197,7 @@
                         </button>
 
                         <!-- KUBUS 6: CETAK LAPORAN -->
-                        <button onclick="switchTab('cetak-laporan')" class="bg-white hover:bg-teal-50/60 p-5 rounded-2xl border border-teal-200 shadow-sm flex flex-col items-center justify-center text-center gap-3 transition-all active:scale-95 group cursor-pointer">
+                        <button onclick="switchTab('cetak-laporan')" class="bg-white hover:bg-teal-50/60 p-5 rounded-2xl border border-slate-200 shadow-sm flex flex-col items-center justify-center text-center gap-3 transition-all active:scale-95 group cursor-pointer">
                             <div class="w-12 h-12 rounded-xl bg-teal-50 text-teal-600 flex items-center justify-center text-xl group-hover:bg-teal-100 transition-all">
                                 <i class="fa-solid fa-print"></i>
                             </div>
@@ -492,11 +492,9 @@
 
         window.addEventListener('DOMContentLoaded', () => { 
             checkAutoLogin(); 
-            // ENGINE SINKRONISASI TOMBOL BACK BAWAAN SMARTPHONE/DEVICE GADGET
             window.addEventListener('popstate', function(event) {
                 if (localStorage.getItem('adm_session_active') === 'true') {
                     if (activeTab !== 'dashboard') {
-                        // Jika sedang tidak di dashboard, gagalkan penutupan tab & paksa kembali ke dashboard
                         executeTabSwitch('dashboard', true, false);
                     }
                 }
@@ -603,11 +601,9 @@
         
         function handleLogout() { 
             localStorage.removeItem('adm_session_active'); 
-            document.getElementById('main-app').classList.add('hidden');
             document.getElementById('page-login').classList.remove('hidden');
         }
 
-        // TRIGGER DIJALANKAN SAAT KLIK KUBUS MENU UTAMA
         function switchTab(tabId) { executeTabSwitch(tabId, true, true); }
 
         function executeTabSwitch(tabId, shouldProcessSubRenders, pushToHistoryHistory) {
@@ -619,7 +615,6 @@
             const targetPage = document.getElementById(`tab-${tabId}`); 
             if(targetPage) targetPage.classList.add('active');
 
-            // MANAGEMEN STATE HISTORY SMARTPHONE
             if (pushToHistoryHistory) {
                 if (tabId === 'dashboard') {
                     history.pushState({page: 'dashboard'}, 'Dashboard', '#home');
@@ -650,8 +645,13 @@
         function updateDashboardWidgets() {
             const totSiswa = document.getElementById('dash-total-siswa');
             const nmGuru = document.getElementById('dash-nama-guru');
+            const nipGuru = document.getElementById('dash-nip-guru');
+            const mottoGuru = document.getElementById('dash-motto-guru');
+            
             if(totSiswa) totSiswa.innerText = (state.siswa[currentKelas] || []).length;
-            if(nmGuru) nmGuru.innerText = state.biodata.nama || '';
+            if(nmGuru) nmGuru.innerText = state.biodata.nama || 'Belum Diatur';
+            if(nipGuru) nipGuru.innerText = "NIP: " + (state.biodata.nip || '-');
+            if(mottoGuru) mottoGuru.innerText = `"${state.biodata.motto || 'Motto Belum Diisi'}"`;
         }
 
         function renderDataSiswa() {
@@ -833,6 +833,9 @@
         function fillBiodataForm() { 
             const bNm = document.getElementById('bio-nama');
             const bNip = document.getElementById('bio-nip');
+            const bTtl = document.getElementById('bio-ttl');
+            const bWa = document.getElementById('bio-kontak');
+            const bMto = document.getElementById('bio-motto');
             const bUsr = document.getElementById('bio-username-baru');
             const bPwd = document.getElementById('bio-password-baru');
             const bThf = document.getElementById('bio-nama-tahfidz');
@@ -840,6 +843,9 @@
             
             if(bNm) bNm.value = state.biodata.nama || ''; 
             if(bNip) bNip.value = state.biodata.nip || ''; 
+            if(bTtl) bTtl.value = state.biodata.ttl || ''; 
+            if(bWa) bWa.value = state.biodata.kontak || ''; 
+            if(bMto) bMto.value = state.biodata.motto || ''; 
             if(bUsr) bUsr.value = state.auth.username || 'abdul basith';
             if(bPwd) bPwd.value = state.auth.password || '123456';
             if(bThf) bThf.value = state.biodata.guruTahfidz || 'Ustzh. Siti Aminah';
@@ -854,6 +860,9 @@
             e.preventDefault(); 
             state.biodata.nama = document.getElementById('bio-nama').value.trim(); 
             state.biodata.nip = document.getElementById('bio-nip').value.trim(); 
+            state.biodata.ttl = document.getElementById('bio-ttl').value.trim(); 
+            state.biodata.kontak = document.getElementById('bio-kontak').value.trim(); 
+            state.biodata.motto = document.getElementById('bio-motto').value.trim(); 
             state.biodata.guruTahfidz = document.getElementById('bio-nama-tahfidz').value.trim();
             state.biodata.guruPraktek = document.getElementById('bio-nama-praktek').value.trim();
             
@@ -870,10 +879,11 @@
             saveToLocal('biodata'); 
             buildKelasDropdown(); 
             
-            alert("Biodata dan Akun Masuk Disimpan.");
+            alert("Biodata disimpan dan disinkronkan ke Dashboard!");
             switchTab('dashboard');
         }
 
+        // PERBAIKAN TOTAL KOP SURAT: MENYELARASKAN ISI TEKS & ALAMAT KOP SESUAI GAMBAR ASLI
         function triggerPrintFriendly(type) {
             const targetKls = document.getElementById('export-target-kelas').value; 
             const targetBln = parseInt(document.getElementById('export-target-bulan').value);
@@ -881,18 +891,18 @@
             if(listSiswa.length === 0) { alert("Siswa kosong!"); return; }
 
             let kopHTML = `
-                <div style="font-family: 'Times New Roman', serif; background: white; padding: 5px; border-bottom: 3px double black; margin-bottom: 15px; display: flex; align-items: center; justify-content: space-between;">
-                    <div style="flex-shrink: 0; width: 70px; text-align: left;">
-                        <img src="https://lh3.googleusercontent.com/d/1b7kC7XgV1z4P-vS1y5m0m4iQ7cPl7jJ9" alt="Logo LP Maarif NU" class="print-logo-left" style="width: 65px; height: 65px; object-fit: contain; display: block;" onerror="this.src='https://upload.wikimedia.org/wikipedia/commons/thumb/a/a2/Logo_Ma%27arif_NU.png/600px-Logo_Ma%27arif_NU.png'">
+                <div style="font-family: Arial, Helvetica, sans-serif; background: white; padding: 2px; border-bottom: 4px solid black; margin-bottom: 15px; display: flex; align-items: center; justify-content: space-between;">
+                    <div style="flex-shrink: 0; width: 75px; text-align: left;">
+                        <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Logo_Ma%27arif_NU.png" alt="Logo LP Maarif NU" class="print-logo-left" style="width: 70px; height: 50px; object-fit: contain; display: block;">
                     </div>
-                    <div style="text-align: center; flex-grow: 1; padding: 0 10px;">
-                        <h4 style="margin: 0; font-size: 13pt; font-weight: bold; text-transform: uppercase;">YAYASAN NURIL ISLAM PACITAN</h4>
-                        <h2 style="margin: 2px 0; font-size: 17pt; font-weight: bold; color: #16a34a; text-transform: uppercase;">SD NURIL ISLAM PACITAN</h2>
-                        <h3 style="margin: 0; font-size: 12pt; font-weight: bold; text-transform: uppercase;">MADRASAH DINIYAH (MADIN) WUSTHA</h3>
-                        <p style="margin: 2px 0; font-size: 9pt; color: #4b5563; font-style: italic;">JL. KH. Maghribi No. 12, Pucangsewu, Kabupaten Pacitan, Jawa Timur</p>
+                    <div style="text-align: center; flex-grow: 1; padding: 0 5px;">
+                        <h3 style="margin: 0; font-size: 11.5pt; font-weight: bold; tracking-wide: 0.5px; text-transform: uppercase; font-family: 'Arial Black', Gadget, sans-serif;">LEMBAGA PENDIDIKAN MA'ARIF NU PACITAN</h3>
+                        <h2 style="margin: 1px 0; font-size: 12.5pt; font-weight: bold; text-transform: uppercase; font-family: 'Arial Black', Gadget, sans-serif;">MADRASAH DINIYAH NURIL ISLAM (NURIS) PACITAN</h2>
+                        <p style="margin: 0; font-size: 8.5pt; font-weight: 500;">Jl. Tentara Pelajar No. 14, Desa Widoro Kec. Pacitan Kab. Pacitan</p>
+                        <p style="margin: 0; font-size: 8.5pt; font-weight: 500; font-style: normal;">madinnurilislam@gmail.com Telp. 63518 | (0357) 883746</p>
                     </div>
-                    <div style="flex-shrink: 0; width: 70px; text-align: right;">
-                        <img src="https://lh3.googleusercontent.com/d/18-4v4Q_Xq8DaE2xd_tdW-UmjG4NjSt3b" alt="Logo SD Nuril Islam" class="print-logo-right" style="width: 65px; height: 65px; object-fit: contain; display: block;">
+                    <div style="flex-shrink: 0; width: 75px; text-align: right;">
+                        <img src="https://lh3.googleusercontent.com/d/18-4v4Q_Xq8DaE2xd_tdW-UmjG4NjSt3b" alt="Logo SD Nuril Islam" class="print-logo-right" style="width: 58px; height: 58px; object-fit: contain; display: block; margin-left: auto;">
                     </div>
                 </div>`;
 
@@ -926,23 +936,23 @@
                 penandatangan = state.biodata.guruTahfidz || 'Ustzh. Siti Aminah';
                 reportHTML += `
                     <div style="text-align: center; margin-bottom: 20px; font-family: Arial;">
-                        <h3 style="margin:0; font-size:13pt; font-weight:bold; text-transform:uppercase;">LAPORAN BULANAN KONTROL HAFALAN TAHFIDZ AL-QUR'AN</h3>
-                        <p style="margin:3px 0; font-size:10pt;">Kelas: <strong>${targetKls.toUpperCase()}</strong> | Tahun Pelajaran 2026/2027</p>
+                        <h3 style="margin:0; font-size:12pt; font-weight:bold; text-transform:uppercase;">LAPORAN BULANAN KONTROL HAFALAN TAHFIDZ AL-QUR'AN</h3>
+                        <p style="margin:3px 0; font-size:9.5pt;">Kelas: <strong>${targetKls.toUpperCase()}</strong> | Tahun Pelajaran 2026/2027</p>
                     </div>
-                    <table style="width: 100%; border-collapse: collapse; font-family: Arial; font-size: 10pt;">
+                    <table style="width: 100%; border-collapse: collapse; font-family: Arial; font-size: 9.5pt;">
                         <thead style="background:#f3f4f6;">
                             <tr style="text-align:center; font-weight:bold;">
-                                <th style="border:1px solid black; padding:8px; width:6%;">No</th>
-                                <th style="border:1px solid black; padding:8px; text-align:left; width:44%;">Nama Lengkap Santri/Siswa</th>
-                                <th style="border:1px solid black; padding:8px; width:30%;">Capaian Surah & Ayat Terakhir</th>
-                                <th style="border:1px solid black; padding:8px; width:20%;">Predikat Kelancaran</th>
+                                <th style="border:1px solid black; padding:7px; width:6%;">No</th>
+                                <th style="border:1px solid black; padding:7px; text-align:left; width:44%;">Nama Lengkap Santri/Siswa</th>
+                                <th style="border:1px solid black; padding:7px; width:30%;">Capaian Surah & Ayat Terakhir</th>
+                                <th style="border:1px solid black; padding:7px; width:20%;">Predikat Kelancaran</th>
                             </tr>
                         </thead>
                         <tbody>`;
                 listSiswa.forEach((siswa, idx) => {
                     if(siswa && siswa.nama) {
                         let tf = state.tahfidz[`${targetKls}_${siswa.nama}_Tahfidz`] || { juzzSurah: '-', status: 'Lancar' };
-                        reportHTML += `<tr><td style="border:1px solid black; padding:8px; text-align:center;">${idx+1}</td><td style="border:1px solid black; padding:8px; font-weight:bold;">${siswa.nama}</td><td style="border:1px solid black; padding:8px; text-align:center; font-style:italic;">${tf.juzzSurah || '-'}</td><td style="border:1px solid black; padding:8px; text-align:center; font-weight:bold;">${tf.status || '-'}</td></tr>`;
+                        reportHTML += `<tr><td style="border:1px solid black; padding:7px; text-align:center;">${idx+1}</td><td style="border:1px solid black; padding:7px; font-weight:bold;">${siswa.nama}</td><td style="border:1px solid black; padding:7px; text-align:center; font-style:italic;">${tf.juzzSurah || '-'}</td><td style="border:1px solid black; padding:7px; text-align:center; font-weight:bold;">${tf.status || '-'}</td></tr>`;
                     }
                 });
                 reportHTML += `</tbody></table>`;
@@ -950,23 +960,23 @@
                 penandatangan = state.biodata.guruPraktek || 'Ust. Ahmad Fauzi';
                 reportHTML += `
                     <div style="text-align: center; margin-bottom: 20px; font-family: Arial;">
-                        <h3 style="margin:0; font-size:13pt; font-weight:bold; text-transform:uppercase;">LAPORAN BULANAN PERKEMBANGAN PRAKTEK IBADAH & SHOLAT</h3>
-                        <p style="margin:3px 0; font-size:10pt;">Kelas: <strong>${targetKls.toUpperCase()}</strong> | Tahun Pelajaran 2026/2027</p>
+                        <h3 style="margin:0; font-size:12pt; font-weight:bold; text-transform:uppercase;">LAPORAN BULANAN PERKEMBANGAN PRAKTEK IBADAH & SHOLAT</h3>
+                        <p style="margin:3px 0; font-size:9.5pt;">Kelas: <strong>${targetKls.toUpperCase()}</strong> | Tahun Pelajaran 2026/2027</p>
                     </div>
-                    <table style="width: 100%; border-collapse: collapse; font-family: Arial; font-size: 10pt;">
+                    <table style="width: 100%; border-collapse: collapse; font-family: Arial; font-size: 9.5pt;">
                         <thead style="background:#f3f4f6;">
                             <tr style="text-align:center; font-weight:bold;">
-                                <th style="border:1px solid black; padding:8px; width:6%;">No</th>
-                                <th style="border:1px solid black; padding:8px; text-align:left; width:44%;">Nama Lengkap Santri/Siswa</th>
-                                <th style="border:1px solid black; padding:8px; width:30%;">Materi Praktek / Gerakan Ibadah</th>
-                                <th style="border:1px solid black; padding:8px; width:20%;">Kriteria Capaian</th>
+                                <th style="border:1px solid black; padding:7px; width:6%;">No</th>
+                                <th style="border:1px solid black; padding:7px; text-align:left; width:44%;">Nama Lengkap Santri/Siswa</th>
+                                <th style="border:1px solid black; padding:7px; width:30%;">Materi Praktek / Gerakan Ibadah</th>
+                                <th style="border:1px solid black; padding:7px; width:20%;">Kriteria Capaian</th>
                             </tr>
                         </thead>
                         <tbody>`;
                 listSiswa.forEach((siswa, idx) => {
                     if(siswa && siswa.nama) {
                         let ib = state.ibadah[`${targetKls}_${siswa.nama}_PraktekIbadah`] || { materi: '-', predikat: 'Mampu' };
-                        reportHTML += `<tr><td style="border:1px solid black; padding:8px; text-align:center;">${idx+1}</td><td style="border:1px solid black; padding:8px; font-weight:bold;">${siswa.nama}</td><td style="border:1px solid black; padding:8px; text-align:center; font-style:italic;">${ib.materi || '-'}</td><td style="border:1px solid black; padding:8px; text-align:center; font-weight:bold;">${ib.predikat || '-'}</td></tr>`;
+                        reportHTML += `<tr><td style="border:1px solid black; padding:7px; text-align:center;">${idx+1}</td><td style="border:1px solid black; padding:7px; font-weight:bold;">${siswa.nama}</td><td style="border:1px solid black; padding:7px; text-align:center; font-style:italic;">${ib.materi || '-'}</td><td style="border:1px solid black; padding:7px; text-align:center; font-weight:bold;">${ib.predikat || '-'}</td></tr>`;
                     }
                 });
                 reportHTML += `</tbody></table>`;
@@ -974,7 +984,7 @@
 
             const dateStr = new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
             reportHTML += `
-                <div style="margin-top:40px; font-family:Arial; font-size:10pt;"><table style="width:100%;"><tr><td></td><td style="width:45%; text-align:center;"><p>Pacitan, ${dateStr}</p><p style="margin:5px 0 55px 0;">Guru Pengampu Madin,</p><p style="font-weight:bold; text-decoration:underline;">${penandatangan}</p><p style="font-size:9pt;">SD Nuril Islam Pacitan</p></td></tr></table></div>
+                <div style="margin-top:35px; font-family:Arial; font-size:9.5pt;"><table style="width:100%;"><tr><td></td><td style="width:45%; text-align:center;"><p>Pacitan, ${dateStr}</p><p style="margin:4px 0 50px 0;">Guru Pengampu Madin,</p><p style="font-weight:bold; text-decoration:underline;">${penandatangan}</p><p style="font-size:9pt;">NURIS Pacitan</p></td></tr></table></div>
                 <div class="no-print" style="margin-top:25px; text-align:center;">
                     <button onclick="window.print()" style="padding:10px 20px; background:#16a34a; color:white; font-weight:bold; border-radius:8px; cursor:pointer; margin-right:10px;">Mulai Cetak / Simpan PDF</button>
                     <button onclick="exitPrintPreview()" style="padding:10px 20px; background:#64748b; color:white; font-weight:bold; border-radius:8px; cursor:pointer;">Kembali Ke Aplikasi</button>
