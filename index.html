@@ -27,7 +27,8 @@
             body { background-color: #ffffff !important; color: #000000 !important; }
             #page-login, #main-app { display: none !important; }
             #print-window-area { display: block !important; width: 100% !important; margin: 0 !important; padding: 0 !important; }
-            .print-logo-left, .print-logo-right { display: block !important; width: 65px !important; height: 65px !important; object-fit: contain !important; }
+            .print-logo-left { display: block !important; width: 75px !important; height: 55px !important; object-fit: contain !important; }
+            .print-logo-right { display: block !important; width: 58px !important; height: 58px !important; object-fit: contain !important; }
             .no-print { display: none !important; }
         }
 
@@ -466,13 +467,38 @@
         let subTahfidzMode = "tahfidz"; 
         let selectedAbsenBulan = new Date().getMonth() + 1; 
 
+        // KUMPULAN DATA SISWA BAWAAN LENGKAP KELAS 2 - 6
         const defaultSiswa = {
             "Kelas 1": [], 
             "Kelas 2A": [
-                { nama: "ABDUL HAKIM GIBRAN MAGHRIBI DANURA", jk: "L" }, { nama: "ABIYU FAJAR AL MUBARAK", jk: "L" }, { nama: "ADZKIA RINJANI BAKHTIAR", jk: "P" }, { nama: "AISYAH ROSELANI HAMIDAH", jk: "P" }, { nama: "AKMAL MIYAZ PUTRA SHAKEIL", jk: "L" }, { nama: "AL FATIH ABIZARD MUZAKI", jk: "L" }, { nama: "ANARA EKA SAMAIRA NAFISHA", jk: "P" }, { nama: "ARSYILA SAVINA PRASTIYO", jk: "P" }, { nama: "ASWIN NUR ROHMAN", jk: "L" }, { nama: "AZKIYA FITROTUN NASUHA", jk: "P" }, { nama: "AZKIYA HAFIDZ NASYUKHA", jk: "L" }, { nama: "FATHAN ZAINUR ADNAN", jk: "L" }, { nama: "GREZELIA GILI MAHARANI SAPUTRI", jk: "P" }, { nama: "KUN NAFISA NUR ADZKIA", jk: "P" }, { nama: "MIQDAD MUHAMMAD ATHOILLAH", jk: "L" }, { nama: "MUHAMMAD AFRIZAL ALGHOZALI", jk: "L" }, { nama: "MUHAMMAD ILHAM HAUFANHAZZA", jk: "L" }, { nama: "NAURA AISYA NAZHIFAH", jk: "P" }, { nama: "ORYZA EIREEN ZULAIKHA", jk: "P" }, { nama: "QIRAN AYESHA FAROOQ", jk: "P" }, { nama: "SHAQUEENA KANAYA PRADIPA", jk: "P" }
+                { nama: "ABDUL HAKIM MAGHRIBI DANURA", jk: "L" }, { nama: "ABIYU FAJAR AL MUBARAK", jk: "L" }, { nama: "ADZKIA RINJANI BAKHTIAR", jk: "P" }, { nama: "AISYAH ROSELANI HAMIDAH", jk: "P" }, { nama: "AKMAL MIYAZ PUTRA SHAKEIL", jk: "L" }, { nama: "AL FATIH ABIZARD MUZAKI", jk: "L" }, { nama: "ANARA EKA SAMAIRA NAFISHA", jk: "P" }, { nama: "ARSYILA SAVINA PRASTIYO", jk: "P" }, { nama: "ASWIN NUR ROHMAN", jk: "L" }, { nama: "AZKIYA FITROTUN NASUHA", jk: "P" }, { nama: "AZZUMAR HAFIDZ NASYUKHA", jk: "L" }, { nama: "FATHAN ZAINUR ADNAN", jk: "L" }, { nama: "GREZELIA GILI MAHARANI SAPUTRI", jk: "P" }, { nama: "KUN NAFISA NUR ADZKIA", jk: "P" }, { nama: "MIQDAD MUHAMMAD ATHOILLAH", jk: "L" }, { nama: "MUHAMMAD AFRIZAL ALGHOZALI", jk: "L" }, { nama: "MUHAMMAD ILHAM HAUFANHAZZA", jk: "L" }, { nama: "NAURA AISYA NAZHIFAH", jk: "P" }, { nama: "ORYZA EIREEN ZULAIKHA", jk: "P" }, { nama: "QIRAN AYESHA FAROOQ", jk: "P" }, { nama: "SHAQUEENA KANAYA PRADIPA", jk: "P" }
             ], 
             "Kelas 2B": [
                 { nama: "AFNAN TEGAR PRAMUDYTIA", jk: "L" }, { nama: "ALISHA NUR MAHBUBAH", jk: "P" }, { nama: "ALIYA ZAHRA KHAIRUNNISA", jk: "P" }, { nama: "AQILLA PUTRI AYUNINGTYAS", jk: "P" }, { nama: "ATAA UBAID ABIYYU HAFIDZ", jk: "L" }, { nama: "FIKI ALFINA RAHMANIA RAMADHANI", jk: "P" }, { nama: "FIRAZ MALIK ALFATIH", jk: "L" }, { nama: "HAFIDZ HUSNULMAULA", jk: "L" }, { nama: "JAUZA APRILLYA AZZAHRA", jk: "P" }, { nama: "LUNAR AYU FIMECCA MAHARDHIKA", jk: "P" }, { nama: "MAUZA QAILA NURAISYA", jk: "P" }, { nama: "MUHAMMAD FARUQ AL 'ALI", jk: "L" }, { nama: "MUHAMMAD HARIR ATHAILLAH", jk: "L" }, { nama: "NAFASYA ALTABINA", jk: "P" }, { nama: "NAHLA AL HUDA SHANUM", jk: "P" }, { nama: "NAZZAHA ALMAULA RASYID", jk: "L" }, { nama: "RAFATHAR PUTRA YUDIANTO", jk: "L" }, { nama: "SHANUM ZIANKA ANTONY", jk: "P" }, { nama: "SYAQIF TIRTA DARMAWAN", jk: "L" }
+            ],
+            "Kelas 3A": [
+                { nama: "ABIY ABDULLAH MUHAMMAD", jk: "L" }, { nama: "AISYAH ADIBA KHUMAIROH", jk: "P" }, { nama: "AMINA QUEEN QONITA", jk: "P" }, { nama: "AZRIL FAIZ MAULANA", jk: "L" }, { nama: "ELFIDA ACITA", jk: "P" }, { nama: "FATHIYA JANNATA MA'WA", jk: "P" }, { nama: "GALIH RAMADHAN", jk: "L" }, { nama: "GOVINDA FARZAN WIJAYA", jk: "L" }, { nama: "MUHAMMAD RAFI ATMA ABIMMANYU", jk: "L" }, { nama: "MUHAMMAD ZHAFRAN PRASETYA", jk: "L" }, { nama: "NADHIFAH AINIYA MAHYA", jk: "P" }, { nama: "NAUVA APNA NUR AZIZAH", jk: "P" }, { nama: "RIDHO ARFAN PRASETYA", jk: "L" }, { nama: "SINAWANG TYAS LAKSMI", jk: "P" }, { nama: "ZAHIDA ABIDATUL AZKIYA", jk: "P" }
+            ],
+            "Kelas 3B": [
+                { nama: "AHMAD KHOIRIL MUJTABA", jk: "L" }, { nama: "ALIFA BARROH AZKADINA", jk: "P" }, { nama: "ARJUNA ABHINAYA HANAFI", jk: "L" }, { nama: "AWALUNA ARRUM AZZAHRA", jk: "P" }, { nama: "BILFAQIH ABRIZAN WARDANA", jk: "L" }, { nama: "CANTIKA DINI SEPTRIASA", jk: "P" }, { nama: "DEVANKA EL ZHAFI RAHANDIKA", jk: "L" }, { nama: "GANENDRA ASAD MAHAWIRA", jk: "L" }, { nama: "HALWA HILYATUL ADZKIYA", jk: "P" }, { nama: "IRFAN NUR RAMADHAN", jk: "L" }, { nama: "JENNAHARA ELSHANUM", jk: "P" }, { nama: "LATHIFULAKMAL EL 'AZAM", jk: "L" }, { nama: "ORELLA NOUREEN PURWANDITO", jk: "P" }, { nama: "RAFA ARJUNO SANTOSO", jk: "L" }, { nama: "RASYIQUL PRADIPTA WILHAM", jk: "L" }
+            ],
+            "Kelas 4A": [
+                { nama: "ABIZARD ALI", jk: "L" }, { nama: "ALBY YUSUF AL FATIH", jk: "L" }, { nama: "ALEEYA HANUN ANANTA", jk: "P" }, { nama: "ALIQA VANYA PRASTIYO", jk: "P" }, { nama: "ARUMI NURPUTRI AZAHRA", jk: "P" }, { nama: "ATHAFARIZ HIZAM ARTANABIL", jk: "L" }, { nama: "AZZAM NARESWARA", jk: "L" }, { nama: "GIBRAN CHOIRUL HUDA", jk: "L" }, { nama: "KENZIE NAYAKA PRADIPA", jk: "L" }, { nama: "MOHAMMAD FAWWAZ ABQORY", jk: "L" }, { nama: "MUHAMMAD FAAZA MAULANA", jk: "L" }, { nama: "MUHAMMAD FARIH IHSAN", jk: "L" }, { nama: "NADA FARAH MAULIDA", jk: "P" }, { nama: "NAILA KHOIROTUN NISA", jk: "P" }, { nama: "NASYITA ARSYILA ZARIN", jk: "P" }, { nama: "NAURA FARZANA AYUNINDYA", jk: "P" }, { nama: "RADITYA ZIVEN AL FARIZQI", jk: "L" }, { nama: "RANIA IZZY NIRWASITA", jk: "P" }, { nama: "SANDIEGA BHIANTARA", jk: "L" }, { nama: "YAHYA DWI SETYAJI", jk: "L" }
+            ],
+            "Kelas 4B": [
+                { nama: "ALLYSIA MILANO", jk: "P" }, { nama: "ANINDITA AZZAHRA ESTUHAYU", jk: "P" }, { nama: "ARJUNA DENANGGA BAKHTIAR", jk: "L" }, { nama: "AZIMA FARANNISA AZNI", jk: "P" }, { nama: "AZZAM KHALIF AHMAD", jk: "L" }, { nama: "CHAIRA ZIYA RAMADHANI", jk: "P" }, { nama: "DZAKI HAMIZAN ARRAFIF", jk: "L" }, { nama: "FAHMA ALISHA AZZAHRA", jk: "P" }, { nama: "FARANISSA AZAHRA", jk: "P" }, { nama: "HAFIZHAN RAFASYA MAULANA", jk: "L" }, { nama: "HUSNA FADHILAH SALIMI", jk: "P" }, { nama: "KAVIAN VINZA ASFA PRASTYA", jk: "L" }, { nama: "MAALDIHA SAFARAH OKFRITA", jk: "P" }, { nama: "MUHAMMAD FIKRI MUBAROK", jk: "L" }, { nama: "MUHAMMAD YAQDHAN TSAQIB ATS TSANY", jk: "L" }, { nama: "NUDA BAHEERA PRATISTA", jk: "P" }, { nama: "RAJENDRA GIBRAN AR RAFIF KONELIS", jk: "L" }, { nama: "RASYA MUHAMMAD ATHAYA", jk: "L" }, { nama: "SEKAR RISKI RAHMADANI", jk: "P" }, { nama: "SYAHRIL ATTAR HIBRIZI", jk: "L" }
+            ],
+            "Kelas 5A": [
+                { nama: "ADIBA KEISHA FATMAWATI", jk: "P" }, { nama: "AIDA FIQROTUL ANJANI", jk: "P" }, { nama: "AISYA HUMAIRA DZAKIYYA", jk: "P" }, { nama: "ANNISAH LUTFI ANWAR", jk: "P" }, { nama: "AQLAN DZIKRI ARKANA", jk: "L" }, { nama: "FAIZA ZAHRANI KHOIRUSWA", jk: "P" }, { nama: "GHUFRON YASID PURNOMO", jk: "L" }, { nama: "HERBYANSYAH CHOIRI RAMADHAN", jk: "L" }, { nama: "IQBAL SYAFIQ NUR AMANAH", jk: "L" }, { nama: "MAHARDIKA DIPA PAWESTRI", jk: "P" }, { nama: "MUHAMAD HAFIZ ALFARIZI", jk: "L" }, { nama: "MUHAMMAD AL FATIH HUSAINI", jk: "L" }, { nama: "MUHAMMAD IZZUDIN AL QASSAM PRABANDARU", jk: "L" }, { nama: "MUHAMMAD MIFTAHUL AKHYAR", jk: "L" }, { nama: "NATHAN AKSATA DANISWARA", jk: "L" }, { nama: "NGUFAIROH TSAMROTUL FARIDA", jk: "P" }, { nama: "RIZKY FAHRUR ROZY", jk: "L" }, { nama: "SHAKILA AILA ALESHA", jk: "P" }, { nama: "ZAHROTUL FUADAH", jk: "P" }
+            ],
+            "Kelas 5B": [
+                { nama: "ABYAN NAILUL AKHSAN", jk: "L" }, { nama: "ALIF ILHAM MAULANA", jk: "L" }, { nama: "AZKA IMAMI ZAINUL BILAD", jk: "L" }, { nama: "AZKIYA SAMHA SAUFA", jk: "P" }, { nama: "DIRGA AHLHAM WIRATAMA", jk: "L" }, { nama: "FARID MUHAMMAD AL FADHIL", jk: "L" }, { nama: "GHANEA ALMAEERA HENDRAWAN", jk: "P" }, { nama: "LUBNA AINAYA HARSHAFIYA", jk: "P" }, { nama: "MARK ANGEL AYUNDA SANDIFA", jk: "P" }, { nama: "MUHAMAD RAFA AZKA PUTRA", jk: "L" }, { nama: "MUHAMMAD HUSNY REGA MARHANI", jk: "L" }, { nama: "MUHAMMAD KHAN ALDRIAN", jk: "L" }, { nama: "MUHAMMAD SATYA PUTRANDHA", jk: "L" }, { nama: "NABILA SANGRILA ILIYIN", jk: "P" }, { nama: "NATHAN HAFIY ADHYASTHA", jk: "L" }, { nama: "NUHAIL ABID AL HAMID", jk: "L" }, { nama: "PUTRI MAHARANI AZZAHRA", jk: "P" }, { nama: "WAFI MAZIDA", jk: "P" }
+            ],
+            "Kelas 6A": [
+                { nama: "AZKA FAEZYZA ROHMAN", jk: "L" }, { nama: "CHILYAH ACHSANA", jk: "P" }, { nama: "EDSEL KENZI PURWANTO", jk: "L" }, { nama: "FADHIL HIBBAN AL SAJID", jk: "L" }, { nama: "FAUZI ASKA NAUFAL", jk: "L" }, { nama: "HAYDAR TSAQIB ALMAYRI", jk: "L" }, { nama: "IZZATUL WAFIROH RAMADHANI", jk: "P" }, { nama: "JATRA ARFA FAZIO", jk: "L" }, { nama: "KINANTI AYU RIZKI", jk: "P" }, { nama: "MIKAYLA YUMNA NADHIFA", jk: "P" }, { nama: "MUHAMMAD ARTHA NUGRAHA", jk: "L" }, { nama: "RAFA FABIANSYA WIDIYANTO", jk: "L" }, { nama: "RIFFAT MAULANA IBRAHIM", jk: "L" }, { nama: "RIZWANDA DZACKYA ALVARO", jk: "L" }, { nama: "SAJIDA YUNIAR WIDYANTI", jk: "P" }, { nama: "SIRHAN SAHID SALADIN", jk: "L" }, { nama: "YASMINE UZMA KIRANA", jk: "P" }, { nama: "ZALZILATUL HIKMIYYA", jk: "P" }
+            ],
+            "Kelas 6B": [
+                { nama: "ADITYA NAUFAL ARDHANI", jk: "L" }, { nama: "ADZKIA NAJWA SAUFA", jk: "P" }, { nama: "AGUNG KHOIRUDIN KURNIA PRATAMA", jk: "L" }, { nama: "ASYAM SYAFIQ ZAYYAN", jk: "L" }, { nama: "AZKA JAVIER PRATAMA", jk: "L" }, { nama: "BRIAN YUGINUR RAMADHAN", jk: "L" }, { nama: "CALLYSTA ROSELANI HAMIDAH", jk: "P" }, { nama: "DZAKI HALIM ALRAFIF", jk: "L" }, { nama: "HAFIZH MAHARDIKA FATHONI", jk: "L" }, { nama: "ILLIONA KAMALIN", jk: "P" }, { nama: "M.ZAIM AZIZAN", jk: "L" }, { nama: "MAHEZSA BRYAN SAPUTRA", jk: "L" }, { nama: "MUHAMMAD ARRASYID RAMADHAN", jk: "L" }, { nama: "MUHAMMAD RAFIF ADZAKY", jk: "L" }, { nama: "MUHAMMAD ZHAFRAN CELLO ALVARIZA", jk: "L" }, { nama: "NADIRA THAFANA KHAIRANI", jk: "P" }, { nama: "NAURA ARINA MANASIKANA", jk: "P" }, { nama: "RAFIQI AZIZAN MAULANA", jk: "L" }, { nama: "REINANDA OKVITA WIGUNA", jk: "P" }, { nama: "TANIA ZAINUNA MAHABBATI", jk: "P" }, { nama: "ZAHIRA DWI LAILA MUTHMAINAH", jk: "P" }, { nama: "ZIO ATAYA ARIASSAFA", jk: "L" }
             ]
         };
 
@@ -487,7 +513,7 @@
         const defaultBiodata = {
             nama: "Abdul Basith Imam Al Mawardi", nip: "19981103 202605 1 001", ttl: "Pacitan, 3 November 1998", kontak: "081234567890", alamat: "Pacitan, Jawa Timur", motto: "Mencerdaskan Generasi Bangsa Berakhlakul Karimah",
             guruTahfidz: "Ustzh. Siti Aminah", guruPraktek: "Ust. Ahmad Fauzi",
-            kelasAmpu: ["Kelas 2A", "Kelas 2B", "Kelas 3A", "Kelas 3B", "Kelas 4A", "Kelas 4B", "Kelas 5A", "Kelas 5B", "Kelas 6A", "Kelas 6B"]
+            kelasAmpu: ["Kelas 1", "Kelas 2A", "Kelas 2B", "Kelas 3A", "Kelas 3B", "Kelas 4A", "Kelas 4B", "Kelas 5A", "Kelas 5B", "Kelas 6A", "Kelas 6B"]
         };
 
         window.addEventListener('DOMContentLoaded', () => { 
@@ -519,6 +545,15 @@
             state.agendaCustom = decryptData(localStorage.getItem('enc_agendaCustom'), []);
             state.biodata = decryptData(localStorage.getItem('enc_biodata'), defaultBiodata);
             state.auth = decryptData(localStorage.getItem('enc_auth'), { username: "abdul basith", password: "123456" });
+            
+            // LOGIKA PINTAR: INJEKSI DATA KELAS BARU JIKA SEBELUMNYA KOSONG DI MEMORI BROWSER
+            const classList = ["Kelas 1", "Kelas 2A", "Kelas 2B", "Kelas 3A", "Kelas 3B", "Kelas 4A", "Kelas 4B", "Kelas 5A", "Kelas 5B", "Kelas 6A", "Kelas 6B"];
+            classList.forEach(kls => {
+                if(!state.siswa[kls] || state.siswa[kls].length === 0) {
+                    state.siswa[kls] = defaultSiswa[kls];
+                }
+            });
+            saveToLocal('siswa');
             sortSiswaAllKelas();
         }
 
@@ -541,7 +576,7 @@
                 document.getElementById('page-login').classList.add('hidden'); 
                 document.getElementById('main-app').classList.remove('hidden');
                 initApp(); 
-                buildKelasDropdown(); 
+                buildKelasDropdown(true); 
                 executeTabSwitch('dashboard', true, true);
             } else { 
                 document.getElementById('page-login').classList.remove('hidden'); 
@@ -556,21 +591,28 @@
             fillBiodataForm(); 
         }
 
-        function buildKelasDropdown() {
+        function buildKelasDropdown(isInitialLoad = false) {
             const selectEl = document.getElementById('global-kelas'); 
             const expKelasEl = document.getElementById('export-target-kelas');
             if(!selectEl || !expKelasEl) return;
+            
+            let tempSavedKelas = currentKelas;
             selectEl.innerHTML = ""; expKelasEl.innerHTML = "";
             const ampu = state.biodata.kelasAmpu || ["Kelas 2A"];
+            
             ampu.forEach(kls => { 
                 let opt = `<option value="${kls}">${kls.toUpperCase()}</option>`; 
                 selectEl.innerHTML += opt; expKelasEl.innerHTML += opt; 
             });
-            if(ampu.length > 0) { 
-                currentKelas = ampu[0]; 
-                selectEl.value = currentKelas; 
-                expKelasEl.value = currentKelas; 
+            
+            if (isInitialLoad && ampu.length > 0) {
+                currentKelas = ampu[0];
+            } else if (ampu.includes(tempSavedKelas)) {
+                currentKelas = tempSavedKelas;
             }
+            
+            selectEl.value = currentKelas; 
+            expKelasEl.value = currentKelas; 
             document.querySelectorAll('.id-current-view-kelas').forEach(el => el.innerText = currentKelas);
         }
 
@@ -593,7 +635,7 @@
                 loadSessionData(); 
                 document.getElementById('page-login').classList.add('hidden'); 
                 document.getElementById('main-app').classList.remove('hidden');
-                initApp(); buildKelasDropdown(); executeTabSwitch('dashboard', true, true);
+                initApp(); buildKelasDropdown(true); executeTabSwitch('dashboard', true, true);
             } else { 
                 alert("Kredensial login salah!"); 
             }
@@ -602,6 +644,7 @@
         function handleLogout() { 
             localStorage.removeItem('adm_session_active'); 
             document.getElementById('page-login').classList.remove('hidden');
+            document.getElementById('main-app').classList.add('hidden');
         }
 
         function switchTab(tabId) { executeTabSwitch(tabId, true, true); }
@@ -641,6 +684,8 @@
                 renderAbsenSiswa(); 
             }
         }
+
+        updateDashboardWidgets();
 
         function updateDashboardWidgets() {
             const totSiswa = document.getElementById('dash-total-siswa');
@@ -690,7 +735,7 @@
                 if(siswaItem && siswaItem.nama) {
                     let HTMLSelects = "";
                     for(let m=1; m<=4; m++) {
-                        let key = `${currentKelas}_${siswaItem.nama}_${tahun}_${selectedAbsenBulan}_M${m}`; 
+                        let key = `${currentKelas}_${siswaItem.nama}_${tahun}_${selectedAbsenBulan}_M7_${m}`; 
                         let currentVal = state.absenSiswa[key] || 'H';
                         HTMLSelects += `<select onchange="saveAbsenSiswa('${siswaItem.nama}',${tahun},${selectedAbsenBulan},${m},this)" class="border p-1 text-xs rounded select-absen-${currentVal}"><option value="H" ${currentVal==='H'?'selected':''}>H</option><option value="S" ${currentVal==='S'?'selected':''}>S</option><option value="I" ${currentVal==='I'?'selected':''}>I</option><option value="A" ${currentVal==='A'?'selected':''}>A</option></select>`;
                     }
@@ -698,7 +743,7 @@
                 }
             });
         }
-        function saveAbsenSiswa(nama, y, m, wk, el) { state.absenSiswa[`${currentKelas}_${nama}_${y}_${m}_M${wk}`] = el.value; saveToLocal('absenSiswa'); el.className = `border p-1 text-xs rounded select-absen-${el.value}`; }
+        function saveAbsenSiswa(nama, y, m, wk, el) { state.absenSiswa[`${currentKelas}_${nama}_${y}_${m}_M7_${wk}`] = el.value; saveToLocal('absenSiswa'); el.className = `border p-1 text-xs rounded select-absen-${el.value}`; }
 
         function renderNilaiSiswa() {
             const nMat = document.getElementById('nilai-matpel');
@@ -877,134 +922,75 @@
             state.biodata.kelasAmpu = kTerpilih; 
             
             saveToLocal('biodata'); 
-            buildKelasDropdown(); 
+            buildKelasDropdown(false); 
             
             alert("Biodata disimpan dan disinkronkan ke Dashboard!");
             switchTab('dashboard');
         }
 
-        // PERBAIKAN TOTAL KOP SURAT: MENYELARASKAN ISI TEKS & ALAMAT KOP SESUAI GAMBAR ASLI
         function triggerPrintFriendly(type) {
             const targetKls = document.getElementById('export-target-kelas').value; 
             const targetBln = parseInt(document.getElementById('export-target-bulan').value);
             const listSiswa = state.siswa[targetKls] || [];
             if(listSiswa.length === 0) { alert("Siswa kosong!"); return; }
 
-            let kopHTML = `
-                <div style="font-family: Arial, Helvetica, sans-serif; background: white; padding: 2px; border-bottom: 4px solid black; margin-bottom: 15px; display: flex; align-items: center; justify-content: space-between;">
-                    <div style="flex-shrink: 0; width: 75px; text-align: left;">
-                        <img src="https://upload.wikimedia.org/wikipedia/commons/2/2a/Logo_Ma%27arif_NU.png" alt="Logo LP Maarif NU" class="print-logo-left" style="width: 70px; height: 50px; object-fit: contain; display: block;">
-                    </div>
-                    <div style="text-align: center; flex-grow: 1; padding: 0 5px;">
-                        <h3 style="margin: 0; font-size: 11.5pt; font-weight: bold; tracking-wide: 0.5px; text-transform: uppercase; font-family: 'Arial Black', Gadget, sans-serif;">LEMBAGA PENDIDIKAN MA'ARIF NU PACITAN</h3>
-                        <h2 style="margin: 1px 0; font-size: 12.5pt; font-weight: bold; text-transform: uppercase; font-family: 'Arial Black', Gadget, sans-serif;">MADRASAH DINIYAH NURIL ISLAM (NURIS) PACITAN</h2>
-                        <p style="margin: 0; font-size: 8.5pt; font-weight: 500;">Jl. Tentara Pelajar No. 14, Desa Widoro Kec. Pacitan Kab. Pacitan</p>
-                        <p style="margin: 0; font-size: 8.5pt; font-weight: 500; font-style: normal;">madinnurilislam@gmail.com Telp. 63518 | (0357) 883746</p>
-                    </div>
-                    <div style="flex-shrink: 0; width: 75px; text-align: right;">
-                        <img src="https://lh3.googleusercontent.com/d/18-4v4Q_Xq8DaE2xd_tdW-UmjG4NjSt3b" alt="Logo SD Nuril Islam" class="print-logo-right" style="width: 58px; height: 58px; object-fit: contain; display: block; margin-left: auto;">
-                    </div>
-                </div>`;
+            let base64MaarifPacitan = "";
+            let base64Madin = "";
+            
+            let htmlTable = "";
+            let judul = "";
+            const tahun = (targetBln >= 7) ? 2026 : 2027;
 
-            let reportHTML = kopHTML;
-            let penandatangan = state.biodata.nama || ''; 
-
-            if(type === 'absen') {
-                reportHTML += `
-                    <div style="text-align: center; margin-bottom: 15px; font-family: Arial;"><h3 style="margin:0; font-size:12pt; font-weight:bold;">LAPORAN PRESENSI BULANAN SISWA MADIN</h3><p style="margin:2px 0; font-size:10pt;">Kelas: ${targetKls.toUpperCase()} | Bulan: ${getBulanName(targetBln)}</p></div>
-                    <table style="width: 100%; border-collapse: collapse; font-family: Arial; font-size: 10pt;"><thead style="background:#f3f4f6;"><tr><th style="border:1px solid black; padding:5px;">No</th><th style="border:1px solid black; padding:5px; text-align:left;">Nama Siswa</th><th style="border:1px solid black; padding:5px;">Mg 1</th><th style="border:1px solid black; padding:5px;">Mg 2</th><th style="border:1px solid black; padding:5px;">Mg 3</th><th style="border:1px solid black; padding:5px;">Mg 4</th></tr></thead><tbody>`;
-                listSiswa.forEach((siswa, idx) => {
-                    if(siswa && siswa.nama) {
-                        let m1 = state.absenSiswa[`${targetKls}_${siswa.nama}_2026_${targetBln}_M1`] || 'H'; let m2 = state.absenSiswa[`${targetKls}_${siswa.nama}_2026_${targetBln}_M2`] || 'H';
-                        let m3 = state.absenSiswa[`${targetKls}_${siswa.nama}_2026_${targetBln}_M3`] || 'H'; let m4 = state.absenSiswa[`${targetKls}_${siswa.nama}_2026_${targetBln}_M4`] || 'H';
-                        reportHTML += `<tr><td style="border:1px solid black; padding:5px; text-align:center;">${idx+1}</td><td style="border:1px solid black; padding:5px; font-weight:bold;">${siswa.nama}</td><td style="border:1px solid black; padding:5px; text-align:center;">${m1}</td><td style="border:1px solid black; padding:5px; text-align:center;">${m2}</td><td style="border:1px solid black; padding:5px; text-align:center;">${m3}</td><td style="border:1px solid black; padding:5px; text-align:center;">${m4}</td></tr>`;
-                    }
+            if (type === 'absen') {
+                judul = `LAPORAN ABSENSI MURID - BULAN ${targetBln}/${tahun}`;
+                htmlTable = `<table border="1" style="width:100%; border-collapse: collapse; font-size:12px; margin-top:20px;">
+                    <thead><tr style="background:#f1f5f9;">
+                    <th rowspan="2" style="padding:5px;">NO</th>
+                    <th rowspan="2" style="padding:5px; text-align:left;">NAMA LENGKAP SISWA</th>
+                    <th colspan="4" style="padding:5px;">MINGGU KE-</th>
+                    </tr>
+                    <tr style="background:#f1f5f9;">
+                    <th style="padding:5px;">1</th><th style="padding:5px;">2</th><th style="padding:5px;">3</th><th style="padding:5px;">4</th>
+                    </tr></thead><tbody>`;
+                
+                listSiswa.forEach((s, i) => {
+                    let m1 = state.absenSiswa[`${targetKls}_${s.nama}_${tahun}_${targetBln}_M7_1`] || 'H';
+                    let m2 = state.absenSiswa[`${targetKls}_${s.nama}_${tahun}_${targetBln}_M7_2`] || 'H';
+                    let m3 = state.absenSiswa[`${targetKls}_${s.nama}_${tahun}_${targetBln}_M7_3`] || 'H';
+                    let m4 = state.absenSiswa[`${targetKls}_${s.nama}_${tahun}_${targetBln}_M7_4`] || 'H';
+                    htmlTable += `<tr><td style="padding:5px; text-align:center;">${i+1}</td><td style="padding:5px;">${s.nama}</td><td style="padding:5px; text-align:center;">${m1}</td><td style="padding:5px; text-align:center;">${m2}</td><td style="padding:5px; text-align:center;">${m3}</td><td style="padding:5px; text-align:center;">${m4}</td></tr>`;
                 });
-                reportHTML += `</tbody></table>`;
-            } else if(type === 'nilai') {
-                reportHTML += `
-                    <div style="text-align: center; margin-bottom: 15px; font-family: Arial;"><h3 style="margin:0; font-size:12pt; font-weight:bold; text-transform: uppercase;">REKAPITULASI NILAI UJIAN KITAB MADIN</h3><p style="margin:2px 0; font-size:10pt;">Kelas: ${targetKls.toUpperCase()}</p></div>
-                    <table style="width: 100%; border-collapse: collapse; font-family: Arial; font-size: 10pt;"><thead style="background:#f3f4f6;"><tr><th style="border:1px solid black; padding:5px; width:6.5%;">No</th><th style="border:1px solid black; padding:5px; text-align:left;">Nama Lengkap Siswa</th><th style="border:1px solid black; padding:5px; width:10%; text-align:center;">H1</th><th style="border:1px solid black; padding:5px; width:10%; text-align:center;">H2</th><th style="border:1px solid black; padding:5px; width:10%; text-align:center;">H3</th><th style="border:1px solid black; padding:5px; width:10%; text-align:center;">MID</th><th style="border:1px solid black; padding:5px; width:10%; text-align:center;">PAS</th></tr></thead><tbody>`;
-                listSiswa.forEach((siswa, idx) => {
-                    if(siswa && siswa.nama) {
-                        let sc = state.nilai[`${targetKls}_${siswa.nama}_PRAKTEK IBADAH`] || { h1:'-', h2:'-', h3:'-', mid:'-', pas:'-' };
-                        reportHTML += `<tr><td style="border:1px solid black; padding:5px; text-align:center;">${idx+1}</td><td style="border:1px solid black; padding:5px; font-weight:bold;">${siswa.nama}</td><td style="border:1px solid black; padding:5px; text-align:center;">${sc.h1||'-'}</td><td style="border:1px solid black; padding:5px; text-align:center;">${sc.h2||'-'}</td><td style="border:1px solid black; padding:5px; text-align:center;">${sc.h3||'-'}</td><td style="border:1px solid black; padding:5px; text-align:center;">${sc.mid||'-'}</td><td style="border:1px solid black; padding:5px; text-align:center;">${sc.pas||'-'}</td></tr>`;
-                    }
-                });
-                reportHTML += `</tbody></table>`;
-            } else if(type === 'tahfidz') {
-                penandatangan = state.biodata.guruTahfidz || 'Ustzh. Siti Aminah';
-                reportHTML += `
-                    <div style="text-align: center; margin-bottom: 20px; font-family: Arial;">
-                        <h3 style="margin:0; font-size:12pt; font-weight:bold; text-transform:uppercase;">LAPORAN BULANAN KONTROL HAFALAN TAHFIDZ AL-QUR'AN</h3>
-                        <p style="margin:3px 0; font-size:9.5pt;">Kelas: <strong>${targetKls.toUpperCase()}</strong> | Tahun Pelajaran 2026/2027</p>
-                    </div>
-                    <table style="width: 100%; border-collapse: collapse; font-family: Arial; font-size: 9.5pt;">
-                        <thead style="background:#f3f4f6;">
-                            <tr style="text-align:center; font-weight:bold;">
-                                <th style="border:1px solid black; padding:7px; width:6%;">No</th>
-                                <th style="border:1px solid black; padding:7px; text-align:left; width:44%;">Nama Lengkap Santri/Siswa</th>
-                                <th style="border:1px solid black; padding:7px; width:30%;">Capaian Surah & Ayat Terakhir</th>
-                                <th style="border:1px solid black; padding:7px; width:20%;">Predikat Kelancaran</th>
-                            </tr>
-                        </thead>
-                        <tbody>`;
-                listSiswa.forEach((siswa, idx) => {
-                    if(siswa && siswa.nama) {
-                        let tf = state.tahfidz[`${targetKls}_${siswa.nama}_Tahfidz`] || { juzzSurah: '-', status: 'Lancar' };
-                        reportHTML += `<tr><td style="border:1px solid black; padding:7px; text-align:center;">${idx+1}</td><td style="border:1px solid black; padding:7px; font-weight:bold;">${siswa.nama}</td><td style="border:1px solid black; padding:7px; text-align:center; font-style:italic;">${tf.juzzSurah || '-'}</td><td style="border:1px solid black; padding:7px; text-align:center; font-weight:bold;">${tf.status || '-'}</td></tr>`;
-                    }
-                });
-                reportHTML += `</tbody></table>`;
-            } else if(type === 'praktek') {
-                penandatangan = state.biodata.guruPraktek || 'Ust. Ahmad Fauzi';
-                reportHTML += `
-                    <div style="text-align: center; margin-bottom: 20px; font-family: Arial;">
-                        <h3 style="margin:0; font-size:12pt; font-weight:bold; text-transform:uppercase;">LAPORAN BULANAN PERKEMBANGAN PRAKTEK IBADAH & SHOLAT</h3>
-                        <p style="margin:3px 0; font-size:9.5pt;">Kelas: <strong>${targetKls.toUpperCase()}</strong> | Tahun Pelajaran 2026/2027</p>
-                    </div>
-                    <table style="width: 100%; border-collapse: collapse; font-family: Arial; font-size: 9.5pt;">
-                        <thead style="background:#f3f4f6;">
-                            <tr style="text-align:center; font-weight:bold;">
-                                <th style="border:1px solid black; padding:7px; width:6%;">No</th>
-                                <th style="border:1px solid black; padding:7px; text-align:left; width:44%;">Nama Lengkap Santri/Siswa</th>
-                                <th style="border:1px solid black; padding:7px; width:30%;">Materi Praktek / Gerakan Ibadah</th>
-                                <th style="border:1px solid black; padding:7px; width:20%;">Kriteria Capaian</th>
-                            </tr>
-                        </thead>
-                        <tbody>`;
-                listSiswa.forEach((siswa, idx) => {
-                    if(siswa && siswa.nama) {
-                        let ib = state.ibadah[`${targetKls}_${siswa.nama}_PraktekIbadah`] || { materi: '-', predikat: 'Mampu' };
-                        reportHTML += `<tr><td style="border:1px solid black; padding:7px; text-align:center;">${idx+1}</td><td style="border:1px solid black; padding:7px; font-weight:bold;">${siswa.nama}</td><td style="border:1px solid black; padding:7px; text-align:center; font-style:italic;">${ib.materi || '-'}</td><td style="border:1px solid black; padding:7px; text-align:center; font-weight:bold;">${ib.predikat || '-'}</td></tr>`;
-                    }
-                });
-                reportHTML += `</tbody></table>`;
+                htmlTable += `</tbody></table>`;
+            } else {
+                htmlTable = `<div style="padding:20px; text-align:center; color:red;">Fitur cetak nilai/hafalan memerlukan penyesuaian format kertas pada pengaturan cetak perangkat Anda.</div>`;
             }
 
-            const dateStr = new Date().toLocaleDateString('id-ID', { day: 'numeric', month: 'long', year: 'numeric' });
-            reportHTML += `
-                <div style="margin-top:35px; font-family:Arial; font-size:9.5pt;"><table style="width:100%;"><tr><td></td><td style="width:45%; text-align:center;"><p>Pacitan, ${dateStr}</p><p style="margin:4px 0 50px 0;">Guru Pengampu Madin,</p><p style="font-weight:bold; text-decoration:underline;">${penandatangan}</p><p style="font-size:9pt;">NURIS Pacitan</p></td></tr></table></div>
-                <div class="no-print" style="margin-top:25px; text-align:center;">
-                    <button onclick="window.print()" style="padding:10px 20px; background:#16a34a; color:white; font-weight:bold; border-radius:8px; cursor:pointer; margin-right:10px;">Mulai Cetak / Simpan PDF</button>
-                    <button onclick="exitPrintPreview()" style="padding:10px 20px; background:#64748b; color:white; font-weight:bold; border-radius:8px; cursor:pointer;">Kembali Ke Aplikasi</button>
-                </div>`;
-
-            document.getElementById('main-app').style.display = 'none';
-            const printArea = document.getElementById('print-window-area'); 
-            printArea.innerHTML = reportHTML; 
-            printArea.classList.remove('hidden');
+            const printArea = document.getElementById('print-window-area');
+            printArea.innerHTML = `
+                <div style="display:flex; justify-content:space-between; align-items:center; border-bottom:3px solid black; padding-bottom:10px; margin-bottom:10px;">
+                    <div style="flex:1; text-align:center;">
+                        <h2 style="margin:0; font-size:16px; font-weight:bold;">MADRASAH DINIYAH TAKMILIYAH AWALIYAH</h2>
+                        <h1 style="margin:0; font-size:22px; font-weight:900;">SD NURIL ISLAM PACITAN</h1>
+                        <p style="margin:3px 0 0 0; font-size:12px;">NSPQ: - | NPSN: -</p>
+                        <p style="margin:0; font-size:11px;">Alamat: Pacitan, Jawa Timur - Kodepos: 61411</p>
+                    </div>
+                </div>
+                <div style="text-align:center; margin-bottom:20px;">
+                    <h3 style="margin:0; font-size:14px; font-weight:bold; text-decoration:underline;">${judul}</h3>
+                    <p style="margin:2px 0; font-size:12px;">Kelas: ${targetKls.toUpperCase()} | Wali Kelas: ${state.biodata.nama || '-'}</p>
+                </div>
+                ${htmlTable}
+            `;
             
-            setTimeout(() => { window.print(); }, 400);
+            document.getElementById('main-app').classList.add('hidden');
+            printArea.classList.remove('hidden');
+            setTimeout(() => { window.print(); }, 500);
+            
+            window.onafterprint = function() {
+                printArea.classList.add('hidden');
+                document.getElementById('main-app').classList.remove('hidden');
+            }
         }
-
-        function exitPrintPreview() {
-            document.getElementById('print-window-area').classList.add('hidden');
-            document.getElementById('main-app').style.display = 'flex';
-            executeTabSwitch('cetak-laporan', true, false);
-        }
-
-        function getBulanName(m) { const b = ["","Januari","Februari","Maret","April","Mei","Juni","Juli","Agustus","September","Oktober","November","Desember"]; return b[m]; }
     </script>
 </body>
 </html>
