@@ -498,7 +498,6 @@
             ]
         };
 
-        // SINKRONISASI TOTAL KALENDER PENDIDIKAN TP 2026/2027 (DUA SEMESTER PENUH)
         const automaticKalenderPendidikan = [
             { tanggal: "2026-07-13", nama: "Hari Pertama Masuk Madin / Awal KBM Sem. Ganjil", tipe: "Dinas/Akademik" },
             { tanggal: "2026-08-17", nama: "Hari Kemerdekaan Republik Indonesia ke-81", tipe: "Nasional" },
@@ -749,6 +748,7 @@
         }
         function saveAbsenSiswa(nama, y, m, wk, el) { state.absenSiswa[`${currentKelas}_${nama}_${y}_${m}_M7_${wk}`] = el.value; saveToLocal('absenSiswa'); el.className = `border p-1 text-xs rounded select-absen-${el.value}`; }
 
+        // INPUT NILAI MENGGUNAKAN LABEL BARU STS DAN SAS
         function renderNilaiSiswa() {
             const nMat = document.getElementById('nilai-matpel');
             if(!nMat) return;
@@ -760,7 +760,7 @@
                 if(siswaItem && siswaItem.nama) {
                     let key = `${currentKelas}_${siswaItem.nama}_${matpel}`; 
                     let scores = state.nilai[key] || { h1:'', h2:'', h3:'', mid:'', pas:'' };
-                    container.innerHTML += `<div class="bg-white p-3 border border-slate-200 rounded-xl space-y-2"><div class="text-xs font-bold text-slate-700">${sIdx+1}. ${siswaItem.nama}</div><div class="grid grid-cols-5 gap-1"><input type="number" placeholder="H1" value="${scores.h1}" oninput="saveNilai('${siswaItem.nama}','${matpel}','h1',this.value)" class="border border-slate-200 text-center text-xs p-1 rounded"><input type="number" placeholder="H2" value="${scores.h2}" oninput="saveNilai('${siswaItem.nama}','${matpel}','h2',this.value)" class="border border-slate-200 text-center text-xs p-1 rounded"><input type="number" placeholder="H3" value="${scores.h3}" oninput="saveNilai('${siswaItem.nama}','${matpel}','h3',this.value)" class="border border-slate-200 text-center text-xs p-1 rounded"><input type="number" placeholder="MID" value="${scores.mid}" oninput="saveNilai('${siswaItem.nama}','${matpel}','mid',this.value)" class="border border-slate-200 text-center text-xs p-1 rounded"><input type="number" placeholder="PAS" value="${scores.pas}" oninput="saveNilai('${siswaItem.nama}','${matpel}','pas',this.value)" class="border border-slate-200 text-center text-xs p-1 rounded"></div></div>`;
+                    container.innerHTML += `<div class="bg-white p-3 border border-slate-200 rounded-xl space-y-2"><div class="text-xs font-bold text-slate-700">${sIdx+1}. ${siswaItem.nama}</div><div class="grid grid-cols-5 gap-1"><input type="number" placeholder="H1" value="${scores.h1}" oninput="saveNilai('${siswaItem.nama}','${matpel}','h1',this.value)" class="border border-slate-200 text-center text-xs p-1 rounded"><input type="number" placeholder="H2" value="${scores.h2}" oninput="saveNilai('${siswaItem.nama}','${matpel}','h2',this.value)" class="border border-slate-200 text-center text-xs p-1 rounded"><input type="number" placeholder="H3" value="${scores.h3}" oninput="saveNilai('${siswaItem.nama}','${matpel}','h3',this.value)" class="border border-slate-200 text-center text-xs p-1 rounded"><input type="number" placeholder="STS" value="${scores.mid}" oninput="saveNilai('${siswaItem.nama}','${matpel}','mid',this.value)" class="border border-slate-200 text-center text-xs p-1 rounded"><input type="number" placeholder="SAS" value="${scores.pas}" oninput="saveNilai('${siswaItem.nama}','${matpel}','pas',this.value)" class="border border-slate-200 text-center text-xs p-1 rounded"></div></div>`;
                 }
             });
         }
@@ -835,7 +835,6 @@
         }
         function saveJurnalText(key, val) { state.jurnal[key] = val; saveToLocal('jurnal'); }
 
-        // MENGURUS STRUKTUR SORTING TANGGAL DUA TAHUN BERBEDA (2026 DAN 2027) SECARA AKURAT
         function renderAgenda() {
             const tbody = document.getElementById('table-agenda-body'); 
             if(!tbody) return;
@@ -934,6 +933,7 @@
             switchTab('dashboard');
         }
 
+        // FUNGSI PRINT / CETAK UTAMANYA DIROMBAK TOTAL
         function triggerPrintFriendly(type) {
             const targetKls = document.getElementById('export-target-kelas').value; 
             const targetBln = parseInt(document.getElementById('export-target-bulan').value);
@@ -943,7 +943,24 @@
             let htmlTable = "";
             let judul = "";
             const tahun = (targetBln >= 7) ? 2026 : 2027;
+            const matpel = document.getElementById('nilai-matpel')?.value || 'TAJWID';
 
+            // 1. STRUKTUR GURU PENGAMPU SECARA DINAMIS BERDASARKAN JENIS MAPEL DAN TAB CETAKAN
+            let guruCetak = state.biodata.nama || 'Belum Diatur';
+            let nipCetak = state.biodata.nip || '';
+
+            if (type === 'tahfidz' || (type === 'nilai' && matpel === 'TAHFIDZ')) {
+                guruCetak = state.biodata.guruTahfidz || 'Ustzh. Siti Aminah';
+                nipCtxt = ''; // Kosongkan NIP jika yang mengampu adalah guru khusus tahfidz
+                nipCetak = '';
+            } else if (type === 'praktek' || (type === 'nilai' && matpel === 'PRAKTEK IBADAH')) {
+                guruCetak = state.biodata.guruPraktek || 'Ust. Ahmad Fauzi';
+                nipCetak = '';
+            }
+
+            let formatNip = nipCetak ? `NIP. ${nipCetak}` : '';
+
+            // 2. PEMBUATAN STRUKTUR TABEL
             if (type === 'absen') {
                 judul = `REKAPITULASI PRESENSI BULANAN MURID`;
                 htmlTable = `<table border="1" style="width:100%; border-collapse: collapse; font-size:11px; margin-top:15px;">
@@ -957,22 +974,20 @@
                 });
                 htmlTable += `</tbody></table>`;
             } else if (type === 'nilai') {
-                const matpel = document.getElementById('nilai-matpel')?.value || 'TAJWID';
                 judul = `REKAPITULASI NILAI UJIAN - MAPEL: ${matpel}`;
                 
+                // MENGGANTI MID->STS, PAS->SAS, RATA2->NILAI RATA-RATA. HILANGKAN KKM & STATUS
                 htmlTable = `<table border="1" style="width:100%; border-collapse: collapse; font-size:11px; margin-top:15px;">
                     <thead>
                         <tr style="background:#f8fafc;">
                             <th style="padding:6px; width:35px;">NO</th>
                             <th style="padding:6px; text-align:left;">NAMA LENGKAP SISWA</th>
-                            <th style="padding:6px; width:35px;">H1</th>
-                            <th style="padding:6px; width:35px;">H2</th>
-                            <th style="padding:6px; width:35px;">H3</th>
-                            <th style="padding:6px; width:40px;">MID</th>
-                            <th style="padding:6px; width:40px;">PAS</th>
-                            <th style="padding:6px; width:50px; background:#f0fdf4;">RATA²</th>
-                            <th style="padding:6px; width:40px;">KKM</th>
-                            <th style="padding:6px; width:75px;">STATUS</th>
+                            <th style="padding:6px; width:45px;">H1</th>
+                            <th style="padding:6px; width:45px;">H2</th>
+                            <th style="padding:6px; width:45px;">H3</th>
+                            <th style="padding:6px; width:45px;">STS</th>
+                            <th style="padding:6px; width:45px;">SAS</th>
+                            <th style="padding:6px; width:120px; background:#f0fdf4;">NILAI RATA-RATA</th>
                         </tr>
                     </thead>
                     <tbody>`;
@@ -988,11 +1003,9 @@
                     if(scores.pas !== '' && !isNaN(scores.pas)) validScores.push(parseFloat(scores.pas));
 
                     let rataRata = '-';
-                    let statusKet = '-';
                     if(validScores.length > 0) {
                         let totalSum = validScores.reduce((a, b) => a + b, 0);
                         rataRata = (totalSum / validScores.length).toFixed(1);
-                        statusKet = parseFloat(rataRata) >= 75 ? 'TUNTAS' : 'REMIDI';
                     }
 
                     htmlTable += `<tr>
@@ -1004,8 +1017,6 @@
                         <td align="center" style="padding:5px;">${scores.mid || '-'}</td>
                         <td align="center" style="padding:5px;">${scores.pas || '-'}</td>
                         <td align="center" style="padding:5px; font-weight:bold; background:#f0fdf4;">${rataRata}</td>
-                        <td align="center" style="padding:5px; color:#475569;">75</td>
-                        <td align="center" style="padding:5px; font-weight:bold; color: ${statusKet === 'TUNTAS' ? '#16a34a' : (statusKet === 'REMIDI' ? '#dc2626' : '#000000')}">${statusKet}</td>
                     </tr>`;
                 });
                 htmlTable += `</tbody></table>`;
@@ -1030,13 +1041,15 @@
             }
 
             const printArea = document.getElementById('print-window-area');
+            const blnNames = ["", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
             
+            // PENYETARAAN LOGO TANPA MEMPERKECIL LOGO MA'RIF (LOSSLESS ORIGINAL ASPECT RATIO)
             printArea.innerHTML = `
                 <table border="0" style="width:100%; border-collapse: collapse; margin-bottom: 5px;">
                     <tr>
-                        <!-- LOGO KIRI: LP MA'RIF NU -->
+                        <!-- LOGO KIRI: LP MA'RIF NU (DIOPTIMALKAN UKURANNYA HINGGA GA LEBIH KECIL) -->
                         <td style="width: 15%; text-align: left; vertical-align: middle; padding-bottom: 5px;">
-                            <img src="https://lh3.googleusercontent.com/d/1A-YlPCnaKliFg2lwZmZBxgXUqEhh2Sy-" style="height: 75px; width: auto; object-fit: contain; display: block; margin-right: auto;" onerror="this.src='https://placehold.co/120x85/16a34a/white?text=LP+MAARIF'">
+                            <img src="https://lh3.googleusercontent.com/d/1A-YlPCnaKliFg2lwZmZBxgXUqEhh2Sy-" style="height: 75px; width: auto; max-width: 110px; display: block; margin-right: auto;" onerror="this.src='https://placehold.co/120x85/16a34a/white?text=LP+MAARIF'">
                         </td>
                         <!-- TEKS TENGAH KOP SURAT -->
                         <td style="width: 70%; text-align: center; vertical-align: middle; font-family: sans-serif; color: #000000; padding-bottom: 5px;">
@@ -1047,7 +1060,7 @@
                         </td>
                         <!-- LOGO KANAN: BINTANG SD NURIS -->
                         <td style="width: 15%; text-align: right; vertical-align: middle; padding-bottom: 5px;">
-                            <img src="https://lh3.googleusercontent.com/d/18-4v4Q_Xq8DaE2xd_tdW-UmjG4NjSt3b" style="height: 75px; width: auto; object-fit: contain; display: block; margin-left: auto;">
+                            <img src="https://lh3.googleusercontent.com/d/18-4v4Q_Xq8DaE2xd_tdW-UmjG4NjSt3b" style="height: 75px; width: auto; max-width: 110px; display: block; margin-left: auto;">
                         </td>
                     </tr>
                 </table>
@@ -1057,7 +1070,21 @@
                     <h3 style="margin:0; font-size:13.5px; font-weight:bold; text-decoration:underline; text-transform: uppercase; letter-spacing: 0.5px;">${judul}</h3>
                     <p style="margin:3px 0; font-size:12px; font-weight: 600;">Kelas: ${targetKls.toUpperCase()} | TP: 2026/2027 | Bulan: ${targetBln}/${tahun}</p>
                 </div>
+
                 ${htmlTable}
+
+                <!-- PENAMBAHAN TANDA TANGAN DARI BIODATA YANG DIINPUT SECARA OTOMATIS -->
+                <table border="0" style="width: 100%; margin-top: 45px; font-family: sans-serif; font-size: 12px;">
+                    <tr>
+                        <td style="width: 65%;"></td>
+                        <td align="center" style="width: 35%; line-height: 1.6;">
+                            Pacitan, ${new Date().getDate()} ${blnNames[targetBln]} ${tahun}<br>
+                            Guru Pengampu,<br><br><br><br><br>
+                            <strong><u>${guruCetak}</u></strong><br>
+                            <span style="color: #334155;">${formatNip}</span>
+                        </td>
+                    </tr>
+                </table>
             `;
             
             document.getElementById('main-app').classList.add('hidden');
