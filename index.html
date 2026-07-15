@@ -463,9 +463,10 @@
         let subTahfidzMode = "tahfidz"; 
         let selectedAbsenBulan = new Date().getMonth() + 1; 
 
-        // DATA UTAMA SISWA MADIN
         const defaultSiswa = {
-            "Kelas 1": [], 
+            "Kelas 1": [
+                { nama: "ABDULLAH HAMAS PRABANDARU", jk: "L" }, { nama: "ADZKIYA NAYLA NURFALAAH", jk: "P" }, { nama: "AIZA AZAHRA LAKSONO", jk: "P" }, { nama: "ALAIKA MUHAMMAD ARJUN NAJA", jk: "L" }, { nama: "ALFAIZI", jk: "L" }, { nama: "ASYRAF HAMIZAN ELYAFIQ", jk: "L" }, { nama: "ATIQOH ZAIDATUL QOIROH", jk: "P" }, { nama: "BAYU SETYO AJI", jk: "L" }, { nama: "EL BHARA BISMA ARIASSAFA", jk: "L" }, { nama: "ELBARA KHIMORA SHAFIN", jk: "L" }, { nama: "ELSANA HAZELIA SIRAN", jk: "P" }, { nama: "FAHMI HISYAM WIRAYUDHA", jk: "L" }, { nama: "FEISHA ARUNA GHAISANI", jk: "P" }, { nama: "HIMMATUL ABIDAH", jk: "P" }, { nama: "ILHAM MAULANA ASSEGAF", jk: "L" }, { nama: "KAIVAN FARRAS ABICANDRA", jk: "L" }, { nama: "KHAYLA SILVINA", jk: "P" }, { nama: "KIANNONABIL MARHENDRA", jk: "L" }, { nama: "MUHAMAD ARFA ROBIZA", jk: "L" }, { nama: "MUHAMMAD AFRIZAL AKHZAM", jk: "L" }, { nama: "MUHAMMAD RAMADHANA ARIF", jk: "L" }, { nama: "NALA FUDHLA JAUHARI", jk: "P" }, { nama: "NURAISHA FAIDA HUMAIRAH", jk: "P" }, { nama: "PRAMUDHITA CHANDRA WASIS", jk: "P" }, { nama: "RAFFASYA BRYAN EL ZAVIER", jk: "L" }, { nama: "REINA SOFIE NUR IKHSAN", jk: "P" }, { nama: "SALMA NUHAIFFA", jk: "P" }, { nama: "SHINE TYAGA ANANTA", jk: "L" }, { nama: "ZAIM RAFIF ABQORY", jk: "L" }
+            ], 
             "Kelas 2A": [
                 { nama: "ABDUL HAKIM MAGHRIBI DANURA", jk: "L" }, { nama: "ABIYU FAJAR AL MUBARAK", jk: "L" }, { nama: "ADZKIA RINJANI BAKHTIAR", jk: "P" }, { nama: "AISYAH ROSELANI HAMIDAH", jk: "P" }, { nama: "AKMAL MIYAZ PUTRA SHAKEIL", jk: "L" }, { nama: "AL FATIH ABIZARD MUZAKI", jk: "L" }, { nama: "ANARA EKA SAMAIRA NAFISHA", jk: "P" }, { nama: "ARSYILA SAVINA PRASTIYO", jk: "P" }, { nama: "ASWIN NUR ROHMAN", jk: "L" }, { nama: "AZKIYA FITROTUN NASUHA", jk: "P" }, { nama: "AZKIYA HAFIDZ NASYUKHA", jk: "L" }, { nama: "FATHAN ZAINUR ADNAN", jk: "L" }, { nama: "GREZELIA GILI MAHARANI SAPUTRI", jk: "P" }, { nama: "KUN NAFISA NUR ADZKIA", jk: "P" }, { nama: "MIQDAD MUHAMMAD ATHOILLAH", jk: "L" }, { nama: "MUHAMMAD AFRIZAL ALGHOZALI", jk: "L" }, { nama: "MUHAMMAD ILHAM HAUFANHAZZA", jk: "L" }, { nama: "NAURA AISYA NAZHIFAH", jk: "P" }, { nama: "ORYZA EIREEN ZULAIKHA", jk: "P" }, { nama: "QIRAN AYESHA FAROOQ", jk: "P" }, { nama: "SHAQUEENA KANAYA PRADIPA", jk: "P" }
             ], 
@@ -488,7 +489,7 @@
                 { nama: "ADIBA KEISHA FATMAWATI", jk: "P" }, { nama: "AIDA FIQROTUL ANJANI", jk: "P" }, { nama: "AISYA HUMAIRA DZAKIYYA", jk: "P" }, { nama: "ANNISAH LUTFI ANWAR", jk: "P" }, { nama: "AQLAN DZIKRI ARKANA", jk: "L" }, { nama: "FAIZA ZAHRANI KHOIRUSWA", jk: "P" }, { nama: "GHUFRON YASID PURNOMO", jk: "L" }, { nama: "HERBYANSYAH CHOIRI RAMADHAN", jk: "L" }, { nama: "IQBAL SYAFIQ NUR AMANAH", jk: "L" }, { nama: "MAHARDIKA DIPA PAWESTRI", jk: "P" }, { nama: "MUHAMAD HAFIZ ALFARIZI", jk: "L" }, { nama: "MUHAMMAD AL FATIH HUSAINI", jk: "L" }, { nama: "MUHAMMAD IZZUDIN AL QASSAM PRABANDARU", jk: "L" }, { nama: "MUHAMMAD MIFTAHUL AKHYAR", jk: "L" }, { nama: "NATHAN AKSATA DANISWARA", jk: "L" }, { nama: "NGUFAIROH TSAMROTUL FARIDA", jk: "P" }, { nama: "RIZKY FAHRUR ROZY", jk: "L" }, { nama: "SHAKILA AILA ALESHA", jk: "P" }, { nama: "ZAHROTUL FUADAH", jk: "P" }
             ],
             "Kelas 5B": [
-                { nama: "ABYAN NAILUL AKHSAN", jk: "L" }, { nama: "ALIF ILHAM MAULANA", jk: "L" }, { nama: "AZKA IMAMI ZAINUL BILAD", jk: "L" }, { nama: "AZKIYA SAMHA SAUFA", jk: "P" }, { nama: "DIRGA AHLHAM WIRATAMA", jk: "L" }, { nama: "FARID MUHAMMAD AL FADHIL", jk: "L" }, { nama: "GHANEA ALMAEERA HENDRAWAN", jk: "P" }, { nama: "LUBNA AINAYA HARSHAFIYA", jk: "P" }, { nama: "MARK ANGEL AYUNDA SANDIFA", jk: "P" }, { nama: "MUHAMAD RAFA AZKA PUTRA", jk: "L" }, { nama: "MUHAMMAD HUSNY REGA MARHANI", jk: "L" }, { nama: "MUHAMMAD KHAN ALDRIAN", jk: "L" }, { nama: "MUHAMMAD SATYA PUTRANDHA", jk: "L" }, { nama: "NABILA SANGRILA ILIYIN", jk: "P" }, { nama: "NATHAN HAFIY ADHYASTHA", jk: "L" }, { nama: "NUHAIL ABID AL HAMID", jk: "L" }, { nama: "PUTRI MAHARANI AZZAHRA", jk: "P" }, { nama: "WAFI MAZIDA", jk: "P" }
+                { nama: "ABYAN NAILUL AKHSAN", jk: "L" }, { nama: "ALIF ILHAM MAULANA", jk: "L" }, { nama: "AZKA IMAMI ZAINUL BILAD", jk: "L" }, { nama: "AZKIYA SAMHA SAUFA", jk: "P" }, { font: "Arial", nama: "DIRGA AHLHAM WIRATAMA", jk: "L" }, { nama: "FARID MUHAMMAD AL FADHIL", jk: "L" }, { nama: "GHANEA ALMAEERA HENDRAWAN", jk: "P" }, { nama: "LUBNA AINAYA HARSHAFIYA", jk: "P" }, { nama: "MARK ANGEL AYUNDA SANDIFA", jk: "P" }, { nama: "MUHAMAD RAFA AZKA PUTRA", jk: "L" }, { nama: "MUHAMMAD HUSNY REGA MARHANI", jk: "L" }, { nama: "MUHAMMAD KHAN ALDRIAN", jk: "L" }, { nama: "MUHAMMAD SATYA PUTRANDHA", jk: "L" }, { nama: "NABILA SANGRILA ILIYIN", jk: "P" }, { nama: "NATHAN HAFIY ADHYASTHA", jk: "L" }, { nama: "NUHAIL ABID AL HAMID", jk: "L" }, { nama: "PUTRI MAHARANI AZZAHRA", jk: "P" }, { nama: "WAFI MAZIDA", jk: "P" }
             ],
             "Kelas 6A": [
                 { nama: "AZKA FAEZYZA ROHMAN", jk: "L" }, { nama: "CHILYAH ACHSANA", jk: "P" }, { nama: "EDSEL KENZI PURWANTO", jk: "L" }, { nama: "FADHIL HIBBAN AL SAJID", jk: "L" }, { nama: "FAUZI ASKA NAUFAL", jk: "L" }, { nama: "HAYDAR TSAQIB ALMAYRI", jk: "L" }, { nama: "IZZATUL WAFIROH RAMADHANI", jk: "P" }, { nama: "JATRA ARFA FAZIO", jk: "L" }, { nama: "KINANTI AYU RIZKI", jk: "P" }, { nama: "MIKAYLA YUMNA NADHIFA", jk: "P" }, { nama: "MUHAMMAD ARTHA NUGRAHA", jk: "L" }, { nama: "RAFA FABIANSYA WIDIYANTO", jk: "L" }, { nama: "RIFFAT MAULANA IBRAHIM", jk: "L" }, { nama: "RIZWANDA DZACKYA ALVARO", jk: "L" }, { nama: "SAJIDA YUNIAR WIDYANTI", jk: "P" }, { nama: "SIRHAN SAHID SALADIN", jk: "L" }, { nama: "YASMINE UZMA KIRANA", jk: "P" }, { nama: "ZALZILATUL HIKMIYYA", jk: "P" }
@@ -525,7 +526,7 @@
         window.addEventListener('DOMContentLoaded', () => { 
             checkAutoLogin(); 
             window.addEventListener('popstate', function(event) {
-                if (localStorage.getItem('adm_session_active') === 'true') {
+                if (sessionStorage.getItem('adm_session_active') === 'true') {
                     if (activeTab !== 'dashboard') {
                         executeTabSwitch('dashboard', true, false);
                     }
@@ -535,7 +536,7 @@
 
         function forceResetAplikasi() {
             if (confirm("Aplikasi macet atau berhenti merespon? Kita akan menyegarkan ulang sistem. Seluruh data yang sudah Anda masukkan (Daftar Siswa, Nilai, Presensi) DIJAMIN TETAP AMAN DAN TIDAK HILANG. Lanjutkan?")) {
-                localStorage.removeItem('adm_session_active');
+                sessionStorage.removeItem('adm_session_active');
                 alert("Sistem navigasi berhasil disegarkan! Silakan masuk kembali.");
                 location.reload();
             }
@@ -575,8 +576,9 @@
 
         function saveToLocal(key) { localStorage.setItem(`enc_${key}`, encryptData(state[key])); updateDashboardWidgets(); }
 
+        // SINKRONISASI GERBANG DIUBAH PADA SESSION STORAGE SEHINGGA HARUS LOGIN ULANG SAAT PERANGKAT BARU / BUKA TAB BARU
         function checkAutoLogin() {
-            if (localStorage.getItem('adm_session_active') === 'true') {
+            if (sessionStorage.getItem('adm_session_active') === 'true') {
                 loadSessionData(); 
                 document.getElementById('page-login').classList.add('hidden'); 
                 document.getElementById('main-app').classList.remove('hidden');
@@ -636,7 +638,7 @@
             let storedAuth = decryptData(localStorage.getItem('enc_auth'), { username: "admin", password: "123" });
             
             if(nameInput === storedAuth.username.toLowerCase() && passInput === storedAuth.password) {
-                localStorage.setItem('adm_session_active', 'true'); 
+                sessionStorage.setItem('adm_session_active', 'true'); 
                 loadSessionData(); 
                 document.getElementById('page-login').classList.add('hidden'); 
                 document.getElementById('main-app').classList.remove('hidden');
@@ -647,7 +649,7 @@
         }
         
         function handleLogout() { 
-            localStorage.removeItem('adm_session_active'); 
+            sessionStorage.removeItem('adm_session_active'); 
             document.getElementById('page-login').classList.remove('hidden');
             document.getElementById('main-app').classList.add('hidden');
         }
@@ -748,7 +750,6 @@
         }
         function saveAbsenSiswa(nama, y, m, wk, el) { state.absenSiswa[`${currentKelas}_${nama}_${y}_${m}_M7_${wk}`] = el.value; saveToLocal('absenSiswa'); el.className = `border p-1 text-xs rounded select-absen-${el.value}`; }
 
-        // INPUT NILAI MENGGUNAKAN LABEL BARU STS DAN SAS
         function renderNilaiSiswa() {
             const nMat = document.getElementById('nilai-matpel');
             if(!nMat) return;
@@ -933,7 +934,6 @@
             switchTab('dashboard');
         }
 
-        // FUNGSI PRINT / CETAK UTAMANYA DIROMBAK TOTAL
         function triggerPrintFriendly(type) {
             const targetKls = document.getElementById('export-target-kelas').value; 
             const targetBln = parseInt(document.getElementById('export-target-bulan').value);
@@ -945,13 +945,11 @@
             const tahun = (targetBln >= 7) ? 2026 : 2027;
             const matpel = document.getElementById('nilai-matpel')?.value || 'TAJWID';
 
-            // 1. STRUKTUR GURU PENGAMPU SECARA DINAMIS BERDASARKAN JENIS MAPEL DAN TAB CETAKAN
             let guruCetak = state.biodata.nama || 'Belum Diatur';
             let nipCetak = state.biodata.nip || '';
 
             if (type === 'tahfidz' || (type === 'nilai' && matpel === 'TAHFIDZ')) {
                 guruCetak = state.biodata.guruTahfidz || 'Ustzh. Siti Aminah';
-                nipCtxt = ''; // Kosongkan NIP jika yang mengampu adalah guru khusus tahfidz
                 nipCetak = '';
             } else if (type === 'praktek' || (type === 'nilai' && matpel === 'PRAKTEK IBADAH')) {
                 guruCetak = state.biodata.guruPraktek || 'Ust. Ahmad Fauzi';
@@ -960,7 +958,6 @@
 
             let formatNip = nipCetak ? `NIP. ${nipCetak}` : '';
 
-            // 2. PEMBUATAN STRUKTUR TABEL
             if (type === 'absen') {
                 judul = `REKAPITULASI PRESENSI BULANAN MURID`;
                 htmlTable = `<table border="1" style="width:100%; border-collapse: collapse; font-size:11px; margin-top:15px;">
@@ -976,7 +973,6 @@
             } else if (type === 'nilai') {
                 judul = `REKAPITULASI NILAI UJIAN - MAPEL: ${matpel}`;
                 
-                // MENGGANTI MID->STS, PAS->SAS, RATA2->NILAI RATA-RATA. HILANGKAN KKM & STATUS
                 htmlTable = `<table border="1" style="width:100%; border-collapse: collapse; font-size:11px; margin-top:15px;">
                     <thead>
                         <tr style="background:#f8fafc;">
@@ -1043,22 +1039,18 @@
             const printArea = document.getElementById('print-window-area');
             const blnNames = ["", "Januari", "Februari", "Maret", "April", "Mei", "Juni", "Juli", "Agustus", "September", "Oktober", "November", "Desember"];
             
-            // PENYETARAAN LOGO TANPA MEMPERKECIL LOGO MA'RIF (LOSSLESS ORIGINAL ASPECT RATIO)
             printArea.innerHTML = `
                 <table border="0" style="width:100%; border-collapse: collapse; margin-bottom: 5px;">
                     <tr>
-                        <!-- LOGO KIRI: LP MA'RIF NU (DIOPTIMALKAN UKURANNYA HINGGA GA LEBIH KECIL) -->
                         <td style="width: 15%; text-align: left; vertical-align: middle; padding-bottom: 5px;">
                             <img src="https://lh3.googleusercontent.com/d/1A-YlPCnaKliFg2lwZmZBxgXUqEhh2Sy-" style="height: 75px; width: auto; max-width: 110px; display: block; margin-right: auto;" onerror="this.src='https://placehold.co/120x85/16a34a/white?text=LP+MAARIF'">
                         </td>
-                        <!-- TEKS TENGAH KOP SURAT -->
                         <td style="width: 70%; text-align: center; vertical-align: middle; font-family: sans-serif; color: #000000; padding-bottom: 5px;">
                             <h3 style="margin: 0; font-size: 13px; font-weight: bold; letter-spacing: 0.2px; text-transform: uppercase;">LEMBAGA PENDIDIKAN MA'ARIF NU PACITAN</h3>
                             <h1 style="margin: 2px 0; font-size: 17px; font-weight: 900; letter-spacing: 0.3px; text-transform: uppercase;">MADRASAH DINIYAH NURIL ISLAM (NURIS) PACITAN</h1>
                             <p style="margin: 1px 0; font-size: 10.5px; font-weight: normal;">Jl. Tentara Pelajar No. 14, Desa Widoro Kec. Pacitan Kab. Pacitan</p>
                             <p style="margin: 1px 0; font-size: 10.5px; font-weight: normal;">✉ madinnurilislam@gmail.com Telp. 63518 | (0357) 883746</p>
                         </td>
-                        <!-- LOGO KANAN: BINTANG SD NURIS -->
                         <td style="width: 15%; text-align: right; vertical-align: middle; padding-bottom: 5px;">
                             <img src="https://lh3.googleusercontent.com/d/18-4v4Q_Xq8DaE2xd_tdW-UmjG4NjSt3b" style="height: 75px; width: auto; max-width: 110px; display: block; margin-left: auto;">
                         </td>
@@ -1073,7 +1065,6 @@
 
                 ${htmlTable}
 
-                <!-- PENAMBAHAN TANDA TANGAN DARI BIODATA YANG DIINPUT SECARA OTOMATIS -->
                 <table border="0" style="width: 100%; margin-top: 45px; font-family: sans-serif; font-size: 12px;">
                     <tr>
                         <td style="width: 65%;"></td>
