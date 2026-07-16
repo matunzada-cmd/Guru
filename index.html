@@ -291,9 +291,10 @@
                 <div class="bg-white p-3 rounded-2xl border border-fuchsia-200 shadow-sm flex flex-col gap-2">
                     <h3 class="text-xs font-bold uppercase text-slate-700"><i class="fa-solid fa-mosque text-fuchsia-600 mr-1"></i> Kontrol Hafalan & Ibadah (<span class="id-current-view-kelas">-</span>)</h3>
                     
-                    <div class="flex gap-2 border-t pt-2">
-                        <button id="btn-sub-tahfidz" onclick="switchSubTahfidz('tahfidz')" class="flex-1 py-2 rounded-xl text-xs font-bold bg-fuchsia-600 text-white transition-all cursor-pointer">1. Hafalan Tahfidz Qur'an</button>
-                        <button id="btn-sub-praktek" onclick="switchSubTahfidz('praktek')" class="flex-1 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-600 transition-all cursor-pointer">2. Praktek Ibadah & Sholat</button>
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 border-t pt-2">
+                        <button id="btn-sub-tahfidz" onclick="switchSubTahfidz('tahfidz')" class="py-2 rounded-xl text-xs font-bold bg-fuchsia-600 text-white transition-all cursor-pointer">1. Progres Hafalan Qur'an</button>
+                        <button id="btn-sub-praktek" onclick="switchSubTahfidz('praktek')" class="py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-600 transition-all cursor-pointer">2. Praktek Ibadah & Sholat</button>
+                        <button id="btn-sub-setoran" onclick="switchSubTahfidz('setoran')" class="py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-600 transition-all cursor-pointer">3. Setoran Hafalan Baru</button>
                     </div>
                 </div>
 
@@ -347,6 +348,9 @@
                         </button>
                         <button onclick="triggerPrintFriendly('tahfidz')" class="w-full py-3 bg-fuchsia-600 hover:bg-fuchsia-700 text-white font-bold rounded-xl text-xs shadow flex items-center justify-center gap-1.5 cursor-pointer">
                             <i class="fa-solid fa-book-quran"></i> Cetak Laporan Hafalan Tahfidz Qur'an
+                        </button>
+                        <button onclick="triggerPrintFriendly('setoran')" class="w-full py-3 bg-orange-600 hover:bg-orange-700 text-white font-bold rounded-xl text-xs shadow flex items-center justify-center gap-1.5 cursor-pointer">
+                            <i class="fa-solid fa-file-invoice"></i> Cetak Laporan Setoran Hafalan (Untuk Orang Tua)
                         </button>
                         <button onclick="triggerPrintFriendly('praktek')" class="w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl text-xs shadow flex items-center justify-center gap-1.5 cursor-pointer">
                             <i class="fa-solid fa-hands-praying"></i> Cetak Laporan Perkembangan Praktek Ibadah
@@ -457,7 +461,7 @@
             } catch (e) { return fallback; }
         }
 
-        let state = { siswa: {}, absenSiswa: {}, nilai: {}, jurnal: {}, agendaCustom: [], biodata: {}, auth: {}, tahfidz: {}, ibadah: {} };
+        let state = { siswa: {}, absenSiswa: {}, nilai: {}, jurnal: {}, agendaCustom: [], biodata: {}, auth: {}, tahfidz: {}, ibadah: {}, setoran: {} };
         let currentKelas = "Kelas 2A";
         let activeTab = "dashboard"; 
         let subTahfidzMode = "tahfidz"; 
@@ -489,7 +493,7 @@
                 { nama: "ADIBA KEISHA FATMAWATI", jk: "P" }, { nama: "AIDA FIQROTUL ANJANI", jk: "P" }, { nama: "AISYA HUMAIRA DZAKIYYA", jk: "P" }, { nama: "ANNISAH LUTFI ANWAR", jk: "P" }, { nama: "AQLAN DZIKRI ARKANA", jk: "L" }, { nama: "FAIZA ZAHRANI KHOIRUSWA", jk: "P" }, { nama: "GHUFRON YASID PURNOMO", jk: "L" }, { nama: "HERBYANSYAH CHOIRI RAMADHAN", jk: "L" }, { nama: "IQBAL SYAFIQ NUR AMANAH", jk: "L" }, { nama: "MAHARDIKA DIPA PAWESTRI", jk: "P" }, { nama: "MUHAMAD HAFIZ ALFARIZI", jk: "L" }, { nama: "MUHAMMAD AL FATIH HUSAINI", jk: "L" }, { nama: "MUHAMMAD IZZUDIN AL QASSAM PRABANDARU", jk: "L" }, { nama: "MUHAMMAD MIFTAHUL AKHYAR", jk: "L" }, { nama: "NATHAN AKSATA DANISWARA", jk: "L" }, { nama: "NGUFAIROH TSAMROTUL FARIDA", jk: "P" }, { nama: "RIZKY FAHRUR ROZY", jk: "L" }, { nama: "SHAKILA AILA ALESHA", jk: "P" }, { nama: "ZAHROTUL FUADAH", jk: "P" }
             ],
             "Kelas 5B": [
-                { nama: "ABYAN NAILUL AKHSAN", jk: "L" }, { nama: "ALIF ILHAM MAULANA", jk: "L" }, { nama: "AZKA IMAMI ZAINUL BILAD", jk: "L" }, { nama: "AZKIYA SAMHA SAUFA", jk: "P" }, { font: "Arial", nama: "DIRGA AHLHAM WIRATAMA", jk: "L" }, { nama: "FARID MUHAMMAD AL FADHIL", jk: "L" }, { nama: "GHANEA ALMAEERA HENDRAWAN", jk: "P" }, { nama: "LUBNA AINAYA HARSHAFIYA", jk: "P" }, { nama: "MARK ANGEL AYUNDA SANDIFA", jk: "P" }, { nama: "MUHAMAD RAFA AZKA PUTRA", jk: "L" }, { nama: "MUHAMMAD HUSNY REGA MARHANI", jk: "L" }, { nama: "MUHAMMAD KHAN ALDRIAN", jk: "L" }, { nama: "MUHAMMAD SATYA PUTRANDHA", jk: "L" }, { nama: "NABILA SANGRILA ILIYIN", jk: "P" }, { nama: "NATHAN HAFIY ADHYASTHA", jk: "L" }, { nama: "NUHAIL ABID AL HAMID", jk: "L" }, { nama: "PUTRI MAHARANI AZZAHRA", jk: "P" }, { nama: "WAFI MAZIDA", jk: "P" }
+                { nama: "ABYAN NAILUL AKHSAN", jk: "L" }, { nama: "ALIF ILHAM MAULANA", jk: "L" }, { nama: "AZKA IMAMI ZAINUL BILAD", jk: "L" }, { nama: "AZKIYA SAMHA SAUFA", jk: "P" }, { nama: "DIRGA AHLHAM WIRATAMA", jk: "L" }, { nama: "FARID MUHAMMAD AL FADHIL", jk: "L" }, { nama: "GHANEA ALMAEERA HENDRAWAN", jk: "P" }, { nama: "LUBNA AINAYA HARSHAFIYA", jk: "P" }, { nama: "MARK ANGEL AYUNDA SANDIFA", jk: "P" }, { nama: "MUHAMAD RAFA AZKA PUTRA", jk: "L" }, { nama: "MUHAMMAD HUSNY REGA MARHANI", jk: "L" }, { nama: "MUHAMMAD KHAN ALDRIAN", jk: "L" }, { nama: "MUHAMMAD SATYA PUTRANDHA", jk: "L" }, { nama: "NABILA SANGRILA ILIYIN", jk: "P" }, { nama: "NATHAN HAFIY ADHYASTHA", jk: "L" }, { nama: "NUHAIL ABID AL HAMID", jk: "L" }, { nama: "PUTRI MAHARANI AZZAHRA", jk: "P" }, { nama: "WAFI MAZIDA", jk: "P" }
             ],
             "Kelas 6A": [
                 { nama: "AZKA FAEZYZA ROHMAN", jk: "L" }, { nama: "CHILYAH ACHSANA", jk: "P" }, { nama: "EDSEL KENZI PURWANTO", jk: "L" }, { nama: "FADHIL HIBBAN AL SAJID", jk: "L" }, { nama: "FAUZI ASKA NAUFAL", jk: "L" }, { nama: "HAYDAR TSAQIB ALMAYRI", jk: "L" }, { nama: "IZZATUL WAFIROH RAMADHANI", jk: "P" }, { nama: "JATRA ARFA FAZIO", jk: "L" }, { nama: "KINANTI AYU RIZKI", jk: "P" }, { nama: "MIKAYLA YUMNA NADHIFA", jk: "P" }, { nama: "MUHAMMAD ARTHA NUGRAHA", jk: "L" }, { nama: "RAFA FABIANSYA WIDIYANTO", jk: "L" }, { nama: "RIFFAT MAULANA IBRAHIM", jk: "L" }, { nama: "RIZWANDA DZACKYA ALVARO", jk: "L" }, { nama: "SAJIDA YUNIAR WIDYANTI", jk: "P" }, { nama: "SIRHAN SAHID SALADIN", jk: "L" }, { nama: "YASMINE UZMA KIRANA", jk: "P" }, { nama: "ZALZILATUL HIKMIYYA", jk: "P" }
@@ -548,6 +552,7 @@
             state.nilai = decryptData(localStorage.getItem('enc_nilai'), {});
             state.tahfidz = decryptData(localStorage.getItem('enc_tahfidz'), {});
             state.ibadah = decryptData(localStorage.getItem('enc_ibadah'), {});
+            state.setoran = decryptData(localStorage.getItem('enc_setoran'), {});
             state.jurnal = decryptData(localStorage.getItem('enc_jurnal'), {});
             state.agendaCustom = decryptData(localStorage.getItem('enc_agendaCustom'), []);
             state.biodata = decryptData(localStorage.getItem('enc_biodata'), defaultBiodata);
@@ -576,7 +581,6 @@
 
         function saveToLocal(key) { localStorage.setItem(`enc_${key}`, encryptData(state[key])); updateDashboardWidgets(); }
 
-        // SINKRONISASI GERBANG DIUBAH PADA SESSION STORAGE SEHINGGA HARUS LOGIN ULANG SAAT PERANGKAT BARU / BUKA TAB BARU
         function checkAutoLogin() {
             if (sessionStorage.getItem('adm_session_active') === 'true') {
                 loadSessionData(); 
@@ -769,14 +773,21 @@
 
         function switchSubTahfidz(mode) {
             subTahfidzMode = mode;
-            const btnT = document.getElementById('btn-sub-tahfidz'); const btnP = document.getElementById('btn-sub-praktek');
-            if(!btnT || !btnP) return;
+            const btnT = document.getElementById('btn-sub-tahfidz'); 
+            const btnP = document.getElementById('btn-sub-praktek');
+            const btnS = document.getElementById('btn-sub-setoran');
+            if(!btnT || !btnP || !btnS) return;
+            
+            btnT.className = "py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-600 transition-all cursor-pointer";
+            btnP.className = "py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-600 transition-all cursor-pointer";
+            btnS.className = "py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-600 transition-all cursor-pointer";
+            
             if(mode === 'tahfidz') {
-                btnT.className = "flex-1 py-2 rounded-xl text-xs font-bold bg-fuchsia-600 text-white transition-all cursor-pointer";
-                btnP.className = "flex-1 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-600 transition-all cursor-pointer";
-            } else {
-                btnT.className = "flex-1 py-2 rounded-xl text-xs font-bold bg-slate-100 text-slate-600 transition-all cursor-pointer";
-                btnP.className = "flex-1 py-2 rounded-xl text-xs font-bold bg-fuchsia-600 text-white transition-all cursor-pointer";
+                btnT.className = "py-2 rounded-xl text-xs font-bold bg-fuchsia-600 text-white transition-all cursor-pointer";
+            } else if(mode === 'praktek') {
+                btnP.className = "py-2 rounded-xl text-xs font-bold bg-fuchsia-600 text-white transition-all cursor-pointer";
+            } else if(mode === 'setoran') {
+                btnS.className = "py-2 rounded-xl text-xs font-bold bg-fuchsia-600 text-white transition-all cursor-pointer";
             }
             renderTahfidzSiswa();
         }
@@ -802,7 +813,7 @@
                                     <div><label class="block text-[10px] font-bold text-slate-500 uppercase">Catatan Tambahan Guru</label><input type="text" placeholder="Misal: Perbaiki makhraj" value="${data.catatan}" oninput="saveTahfidz('${siswaItem.nama}','catatan',this.value)" class="w-full border border-slate-200 px-2 py-1.5 rounded-lg text-xs bg-slate-50"></div>
                                 </div>
                             </div>`;
-                    } else {
+                    } else if(subTahfidzMode === 'praktek') {
                         let key = `${currentKelas}_${siswaItem.nama}_PraktekIbadah`; 
                         let data = state.ibadah[key] || { materi: '', predikat: 'Mampu', note: '' };
                         container.innerHTML += `
@@ -814,12 +825,25 @@
                                     <div><label class="block text-[10px] font-bold text-slate-500 uppercase">Catatan Evaluasi Wali Murid</label><input type="text" placeholder="Contoh: Gerakan ruku' kurang pas" value="${data.note}" oninput="saveIbadah('${siswaItem.nama}','note',this.value)" class="w-full border border-slate-200 px-2 py-1.5 rounded-lg text-xs bg-slate-50"></div>
                                 </div>
                             </div>`;
+                    } else if(subTahfidzMode === 'setoran') {
+                        let key = `${currentKelas}_${siswaItem.nama}_Setoran`;
+                        let data = state.setoran[key] || { materiGuru: '', tanggalSetoran: '', nilaiSetoran: 'Lancar' };
+                        container.innerHTML += `
+                            <div class="bg-white p-4 border border-orange-200 rounded-2xl shadow-sm space-y-3">
+                                <div class="text-xs font-bold text-slate-800">${sIdx+1}. ${siswaItem.nama}</div>
+                                <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
+                                    <div><label class="block text-[10px] font-bold text-slate-500 uppercase">Materi/Surah Dari Guru</label><input type="text" placeholder="Contoh: QS. Al-Mulk: 1-5" value="${data.materiGuru}" oninput="saveSetoran('${siswaItem.nama}','materiGuru',this.value)" class="w-full border border-slate-200 px-2 py-1.5 rounded-lg text-xs bg-slate-50"></div>
+                                    <div><label class="block text-[10px] font-bold text-slate-500 uppercase">Tanggal Setoran Anak</label><input type="date" value="${data.tanggalSetoran}" onchange="saveSetoran('${siswaItem.nama}','tanggalSetoran',this.value)" class="w-full border border-slate-200 px-2 py-1.5 rounded-lg text-xs bg-slate-50"></div>
+                                    <div><label class="block text-[10px] font-bold text-slate-500 uppercase">Predikat Kelancaran</label><select onchange="saveSetoran('${siswaItem.nama}','nilaiSetoran',this.value)" class="w-full border border-slate-200 px-2 py-1.5 rounded-lg text-xs bg-slate-50 font-semibold"><option value="Sangat Lancar" ${data.nilaiSetoran==='Sangat Lancar'?'selected':''}>🥇 Sangat Lancar</option><option value="Lancar" ${data.nilaiSetoran==='Lancar'?'selected':''}>🥈 Lancar</option><option value="Cukup Lancar" ${data.nilaiSetoran==='Cukup Lancar'?'selected':''}>🥉 Cukup Lancar</option><option value="Mengulang" ${data.nilaiSetoran==='Mengulang'?'selected':''}>⚠️ Mengulang</option></select></div>
+                                </div>
+                            </div>`;
                     }
                 }
             });
         }
         function saveTahfidz(nama, field, val) { let key = `${currentKelas}_${nama}_Tahfidz`; if(!state.tahfidz[key]) state.tahfidz[key] = { juzzSurah: '', status: 'Lancar', catatan: '' }; state.tahfidz[key][field] = val; saveToLocal('tahfidz'); }
         function saveIbadah(nama, field, val) { let key = `${currentKelas}_${nama}_PraktekIbadah`; if(!state.ibadah[key]) state.ibadah[key] = { materi: '', predikat: 'Mampu', note: '' }; state.ibadah[key][field] = val; saveToLocal('ibadah'); }
+        function saveSetoran(nama, field, val) { let key = `${currentKelas}_${nama}_Setoran`; if(!state.setoran[key]) state.setoran[key] = { materiGuru: '', tanggalSetoran: '', nilaiSetoran: 'Lancar' }; state.setoran[key][field] = val; saveToLocal('setoran'); }
 
         function renderJurnal() {
             const jBln = document.getElementById('jurnal-bulan');
@@ -948,7 +972,7 @@
             let guruCetak = state.biodata.nama || 'Belum Diatur';
             let nipCetak = state.biodata.nip || '';
 
-            if (type === 'tahfidz' || (type === 'nilai' && matpel === 'TAHFIDZ')) {
+            if (type === 'tahfidz' || type === 'setoran' || (type === 'nilai' && matpel === 'TAHFIDZ')) {
                 guruCetak = state.biodata.guruTahfidz || 'Ustzh. Siti Aminah';
                 nipCetak = '';
             } else if (type === 'praktek' || (type === 'nilai' && matpel === 'PRAKTEK IBADAH')) {
@@ -1023,6 +1047,31 @@
                 listSiswa.forEach((s, i) => {
                     let data = state.tahfidz[`${targetKls}_${s.nama}_Tahfidz`] || { juzzSurah: '', status: 'Lancar', catatan: '' };
                     htmlTable += `<tr><td align="center" style="padding:5px;">${i+1}</td><td style="padding:5px; font-weight:500;">${s.nama}</td><td style="padding:5px;">${data.juzzSurah || '-'}</td><td align="center" style="padding:5px;">${data.status}</td><td style="padding:5px;">${data.catatan || '-'}</td></tr>`;
+                });
+                htmlTable += `</tbody></table>`;
+            } else if (type === 'setoran') {
+                judul = `LAPORAN SETORAN HAFALAN GURU UNTUK WALI MURID`;
+                htmlTable = `<table border="1" style="width:100%; border-collapse: collapse; font-size:11px; margin-top:15px;">
+                    <thead>
+                        <tr style="background:#f8fafc;">
+                            <th style="padding:6px; width:40px;">NO</th>
+                            <th style="padding:6px; text-align:left;">NAMA ANAK</th>
+                            <th style="padding:6px; width:260px;">MATERI</th>
+                            <th style="padding:6px; width:130px;">TANGGAL</th>
+                            <th style="padding:6px; width:130px;">KELANCARAN</th>
+                        </tr>
+                    </thead>
+                    <tbody>`;
+                listSiswa.forEach((s, i) => {
+                    let data = state.setoran[`${targetKls}_${s.nama}_Setoran`] || { materiGuru: '', tanggalSetoran: '', nilaiSetoran: '-' };
+                    htmlTable += `
+                        <tr>
+                            <td align="center" style="padding:5px;">${i+1}</td>
+                            <td style="padding:5px; font-weight:500;">${s.nama}</td>
+                            <td style="padding:5px;">${data.materiGuru || '-'}</td>
+                            <td align="center" style="padding:5px;">${data.tanggalSetoran ? formatTanggalIndo(data.tanggalSetoran) : '-'}</td>
+                            <td align="center" style="padding:5px; font-weight:bold;">${data.nilaiSetoran}</td>
+                        </tr>`;
                 });
                 htmlTable += `</tbody></table>`;
             } else if (type === 'praktek') {
