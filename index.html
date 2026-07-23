@@ -5,21 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>APLIKASI ADMINISTRASI GURU MADIN SD NURIL ISLAM PACITAN</title>
     
-    <!-- PWA & MOBILE HOMESCREEN LAYER -->
+    <!-- PWA MOBILE HOMESCREEN LAYER -->
     <meta name="theme-color" content="#16a34a">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
     <meta name="apple-mobile-web-app-title" content="Admin Madin">
     
-    <!-- FAVICON & HOMESCREEN ICONS -->
-    <link rel="icon" type="image/png" href="https://lh3.googleusercontent.com/d/18-4v4Q_Xq8DaE2xd_tdW-UmjG4NjSt3b">
+    <!-- FAVICON & HOMESCREEN ICONS (MULTI-RESOLUTION) -->
+    <link rel="icon" type="image/png" sizes="192x192" href="https://lh3.googleusercontent.com/d/18-4v4Q_Xq8DaE2xd_tdW-UmjG4NjSt3b">
+    <link rel="icon" type="image/png" sizes="512x512" href="https://lh3.googleusercontent.com/d/18-4v4Q_Xq8DaE2xd_tdW-UmjG4NjSt3b">
     <link rel="shortcut icon" href="https://lh3.googleusercontent.com/d/18-4v4Q_Xq8DaE2xd_tdW-UmjG4NjSt3b">
-    <link rel="apple-touch-icon" href="https://lh3.googleusercontent.com/d/18-4v4Q_Xq8DaE2xd_tdW-UmjG4NjSt3b">
-    <link rel="apple-touch-icon-precomposed" href="https://lh3.googleusercontent.com/d/18-4v4Q_Xq8DaE2xd_tdW-UmjG4NjSt3b">
+    <link rel="apple-touch-icon" sizes="180x180" href="https://lh3.googleusercontent.com/d/18-4v4Q_Xq8DaE2xd_tdW-UmjG4NjSt3b">
 
-    <!-- WEB MANIFEST INLINE UNTUK LOGO APLIKASI DI HP ANDROID -->
-    <link rel="manifest" href='data:application/manifest+json,{"name":"ADMIN MADIN SD NURIL ISLAM","short_name":"Admin Madin","start_url":".","display":"standalone","background_color":"#ffffff","theme_color":"#16a34a","icons":[{"src":"https://lh3.googleusercontent.com/d/18-4v4Q_Xq8DaE2xd_tdW-UmjG4NjSt3b","sizes":"512x512","type":"image/png"}]}'>
+    <!-- DYNAMIC MANIFEST PLACEHOLDER FOR PWA SHORTCUT -->
+    <link id="pwa-manifest-link" rel="manifest">
 
     <!-- Tailwind CSS & FontAwesome -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4" crossorigin="anonymous"></script>
@@ -485,6 +485,36 @@
 
     <!-- ================= JAVASCRIPT SYSTEM ================= -->
     <script>
+        // SCRIPT GENERATOR MANIFEST DYNAMICAL BLOB UNTUK IKON PINTASAN HP
+        (function generateDynamicManifest() {
+            const myManifest = {
+                "name": "ADMIN MADIN SD NURIL ISLAM",
+                "short_name": "Admin Madin",
+                "start_url": "./",
+                "display": "standalone",
+                "background_color": "#ffffff",
+                "theme_color": "#16a34a",
+                "icons": [
+                    {
+                        "src": "https://lh3.googleusercontent.com/d/18-4v4Q_Xq8DaE2xd_tdW-UmjG4NjSt3b",
+                        "sizes": "192x192",
+                        "type": "image/png",
+                        "purpose": "any maskable"
+                    },
+                    {
+                        "src": "https://lh3.googleusercontent.com/d/18-4v4Q_Xq8DaE2xd_tdW-UmjG4NjSt3b",
+                        "sizes": "512x512",
+                        "type": "image/png",
+                        "purpose": "any maskable"
+                    }
+                ]
+            };
+            const manifestBlob = new Blob([JSON.stringify(myManifest)], {type: 'application/json'});
+            const manifestURL = URL.createObjectURL(manifestBlob);
+            const linkEl = document.getElementById('pwa-manifest-link');
+            if(linkEl) linkEl.setAttribute('href', manifestURL);
+        })();
+
         function encryptData(data) { return btoa(encodeURIComponent(JSON.stringify(data)).split('').reverse().join('')); }
         function decryptData(encryptedStr, fallback) {
             if (!encryptedStr) return fallback;
