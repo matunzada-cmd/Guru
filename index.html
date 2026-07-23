@@ -57,17 +57,17 @@
             
             <form id="loginForm" onsubmit="handleLogin(event)" class="space-y-4">
                 <div>
-                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">Nama Lengkap / Username</label>
+                    <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">Username</label>
                     <div class="relative">
                         <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-slate-400"><i class="fa-solid fa-user-tie"></i></span>
-                        <input type="text" id="loginUsername" required class="w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-green-500 focus:bg-white" placeholder="Username">
+                        <input type="text" id="loginUsername" required class="w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-green-500 focus:bg-white" placeholder="Contoh: admin">
                     </div>
                 </div>
                 <div>
                     <label class="block text-xs font-bold uppercase tracking-wider text-slate-600 mb-1.5">Password</label>
                     <div class="relative">
                         <span class="absolute inset-y-0 left-0 flex items-center pl-4 text-slate-400"><i class="fa-solid fa-lock"></i></span>
-                        <input type="password" id="loginPassword" required class="w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-green-500 focus:bg-white" placeholder="•••••">
+                        <input type="password" id="loginPassword" required class="w-full pl-11 pr-4 py-3 bg-slate-50 border border-slate-200 rounded-xl text-sm focus:outline-none focus:border-green-500 focus:bg-white" placeholder="Contoh: 123">
                     </div>
                 </div>
 
@@ -81,11 +81,17 @@
                 </button>
             </form>
 
-            <div class="mt-6 pt-4 border-t border-slate-100 text-center">
-                <p class="text-[11px] text-slate-400 mb-2">Aplikasi lemot, macet, atau berhenti merespon?</p>
-                <button onclick="forceResetAplikasi()" class="px-4 py-1.5 bg-red-50 hover:bg-red-100 text-red-600 text-xs font-bold rounded-xl border border-red-200 transition-all cursor-pointer">
-                    <i class="fa-solid fa-rotate mr-1"></i> Paksa Segarkan Sistem (Data Tetap Aman)
-                </button>
+            <!-- BANTUAN PEMULIHAN AKUN -->
+            <div class="mt-6 pt-4 border-t border-slate-100 text-center space-y-2">
+                <p class="text-[11px] text-slate-400">Lupa password atau gagal masuk terus?</p>
+                <div class="flex flex-wrap justify-center gap-2">
+                    <button onclick="resetPasswordDefault()" class="px-3 py-1.5 bg-amber-50 hover:bg-amber-100 text-amber-700 text-xs font-bold rounded-xl border border-amber-200 transition-all cursor-pointer">
+                        <i class="fa-solid fa-key mr-1"></i> Reset Sandi ke Bawaan (admin / 123)
+                    </button>
+                    <button onclick="forceResetAplikasi()" class="px-3 py-1.5 bg-red-50 hover:bg-red-100 text-red-600 text-xs font-bold rounded-xl border border-red-200 transition-all cursor-pointer">
+                        <i class="fa-solid fa-rotate mr-1"></i> Segarkan Sistem
+                    </button>
+                </div>
             </div>
 
         </div>
@@ -554,6 +560,16 @@
             });
         });
 
+        function resetPasswordDefault() {
+            if (confirm("Sandi Anda akan di-reset kembali ke bawaan pabrik:\n\nUsername: admin\nPassword: 123\n\n(Seluruh data siswa, nilai, & presensi Anda DIJAMIN AMAN & TIDAK AKAN HILANG). Lanjutkan?")) {
+                let defaultAuth = { username: "admin", password: "123" };
+                localStorage.setItem('enc_auth', encryptData(defaultAuth));
+                alert("BERHASIL! Sandi berhasil dikembalikan ke standar.\n\nUsername: admin\nPassword: 123\n\nSilakan klik tombol 'Masuk Ke Dashboard' sekarang!");
+                document.getElementById('loginUsername').value = "admin";
+                document.getElementById('loginPassword').value = "123";
+            }
+        }
+
         function forceResetAplikasi() {
             if (confirm("Aplikasi macet atau berhenti merespon? Kita akan menyegarkan ulang sistem. Seluruh data yang sudah Anda masukkan (Daftar Siswa, Nilai, Presensi) DIJAMIN TETAP AMAN DAN TIDAK HILANG. Lanjutkan?")) {
                 sessionStorage.removeItem('adm_session_active');
@@ -654,7 +670,7 @@
         function handleLogin(e) {
             e.preventDefault(); 
             const nameInput = document.getElementById('loginUsername').value.trim().toLowerCase(); 
-            const passInput = document.getElementById('loginPassword').value;
+            const passInput = document.getElementById('loginPassword').value.trim();
             let storedAuth = decryptData(localStorage.getItem('enc_auth'), { username: "admin", password: "123" });
             
             if(nameInput === storedAuth.username.toLowerCase() && passInput === storedAuth.password) {
@@ -664,7 +680,7 @@
                 document.getElementById('main-app').classList.remove('hidden');
                 initApp(); buildKelasDropdown(true); executeTabSwitch('dashboard', true, true);
             } else { 
-                alert("Username atau Password salah!"); 
+                alert("Username atau Password salah!\n\nJika lupa sandi, silakan klik tombol kuning di bawah: 'Reset Sandi ke Bawaan'."); 
             }
         }
 
