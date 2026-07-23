@@ -5,11 +5,21 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>APLIKASI ADMINISTRASI GURU MADIN SD NURIL ISLAM PACITAN</title>
     
-    <!-- PWA LAYER FOR MOBILE AUTO-INSTALL -->
+    <!-- PWA & MOBILE HOMESCREEN LAYER -->
     <meta name="theme-color" content="#16a34a">
+    <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-    <link class="apple-touch-icon" href="https://lh3.googleusercontent.com/d/18-4v4Q_Xq8DaE2xd_tdW-UmjG4NjSt3b">
+    <meta name="apple-mobile-web-app-title" content="Admin Madin">
+    
+    <!-- FAVICON & HOMESCREEN ICONS -->
+    <link rel="icon" type="image/png" href="https://lh3.googleusercontent.com/d/18-4v4Q_Xq8DaE2xd_tdW-UmjG4NjSt3b">
+    <link rel="shortcut icon" href="https://lh3.googleusercontent.com/d/18-4v4Q_Xq8DaE2xd_tdW-UmjG4NjSt3b">
+    <link rel="apple-touch-icon" href="https://lh3.googleusercontent.com/d/18-4v4Q_Xq8DaE2xd_tdW-UmjG4NjSt3b">
+    <link rel="apple-touch-icon-precomposed" href="https://lh3.googleusercontent.com/d/18-4v4Q_Xq8DaE2xd_tdW-UmjG4NjSt3b">
+
+    <!-- WEB MANIFEST INLINE UNTUK LOGO APLIKASI DI HP ANDROID -->
+    <link rel="manifest" href='data:application/manifest+json,{"name":"ADMIN MADIN SD NURIL ISLAM","short_name":"Admin Madin","start_url":".","display":"standalone","background_color":"#ffffff","theme_color":"#16a34a","icons":[{"src":"https://lh3.googleusercontent.com/d/18-4v4Q_Xq8DaE2xd_tdW-UmjG4NjSt3b","sizes":"512x512","type":"image/png"}]}'>
 
     <!-- Tailwind CSS & FontAwesome -->
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4" crossorigin="anonymous"></script>
@@ -24,9 +34,10 @@
         .morph-page.active { display: block; opacity: 1; }
         
         @media print {
-            body { background-color: #ffffff !important; color: #000000 !important; }
+            body { background-color: #ffffff !important; color: #000000 !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
             #page-login, #main-app { display: none !important; }
             #print-window-area { display: block !important; width: 100% !important; margin: 0 !important; padding: 0 !important; }
+            #print-window-area img { display: inline-block !important; visibility: visible !important; -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
             .no-print { display: none !important; }
         }
 
@@ -1219,7 +1230,43 @@
             
             document.getElementById('main-app').classList.add('hidden');
             printArea.classList.remove('hidden');
-            setTimeout(() => { window.print(); }, 500);
+
+            const images = printArea.getElementsByTagName('img');
+            let loadedImgs = 0;
+            const totalImgs = images.length;
+
+            const executePrint = () => {
+                window.print();
+            };
+
+            if (totalImgs === 0) {
+                executePrint();
+            } else {
+                let printDone = false;
+                const checkDone = () => {
+                    loadedImgs++;
+                    if (loadedImgs >= totalImgs && !printDone) {
+                        printDone = true;
+                        executePrint();
+                    }
+                };
+
+                for (let img of images) {
+                    if (img.complete) {
+                        checkDone();
+                    } else {
+                        img.onload = checkDone;
+                        img.onerror = checkDone;
+                    }
+                }
+
+                setTimeout(() => {
+                    if (!printDone) {
+                        printDone = true;
+                        executePrint();
+                    }
+                }, 1200);
+            }
             
             window.onafterprint = function() {
                 printArea.classList.add('hidden');
