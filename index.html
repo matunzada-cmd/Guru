@@ -125,7 +125,7 @@
                 </div>
             </div>
             <div class="flex items-center gap-2">
-                <button onclick="handleLogout()" class="text-slate-400 hover:text-red-500 p-2 text-sm flex items-center justify-center transition-all cursor-pointer" title="Keluar">
+                <button onclick="handleLogout()" class="text-slate-400 hover:text-red-500 p-2 text-sm flex items-center justify-center transition-all cursor-pointer" title="Keluar / Logout">
                     <i class="fa-solid fa-right-from-bracket text-lg"></i>
                 </button>
             </div>
@@ -291,20 +291,28 @@
 
             <!-- 4. NILAI RAPORT KITAB -->
             <div id="tab-nilai-siswa" class="morph-page space-y-4">
-                <div class="bg-white p-4 rounded-2xl border border-green-100 shadow-sm flex justify-between items-center">
+                <div class="bg-white p-4 rounded-2xl border border-green-100 shadow-sm flex flex-wrap justify-between items-center gap-2">
                     <h3 class="text-xs font-bold uppercase text-slate-700"><i class="fa-solid fa-star text-amber-500 mr-1"></i> Rekap Nilai Ujian Akhir Kitab (<span class="id-current-view-kelas">-</span>)</h3>
-                    <select id="nilai-matpel" onchange="renderNilaiSiswa()" class="px-2 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-xs font-bold text-slate-700">
-                        <option value="PRAKTEK IBADAH">PRAKTEK IBADAH</option>
-                        <option value="TAJWID">TAJWID</option>
-                        <option value="FIQIH">FIQIH</option>
-                        <option value="ASWAJA">ASWAJA</option>
-                        <option value="AL QURAN HADIST">AL QUR'AN HADIST</option>
-                        <option value="AKIDAH AKHLAK">AKIDAH AKHLAK</option>
-                        <option value="SKI">SKI</option>
-                        <option value="MABADI FIQIH">MABADI FIQIH</option>
-                        <option value="BAHASA ARAB">BAHASA ARAB</option>
-                        <option value="TAHFIDZ">TAHFIDZ</option>
-                    </select>
+                    
+                    <div class="flex items-center gap-2">
+                        <!-- TOMBOL RESET NILAI PER MAPEL -->
+                        <button onclick="resetNilaiMatpelTerpilih()" class="px-3 py-1.5 bg-red-50 hover:bg-red-100 text-red-600 border border-red-200 text-xs font-bold rounded-lg transition-all cursor-pointer flex items-center gap-1.5">
+                            <i class="fa-solid fa-rotate-left"></i> Reset Nilai Mapel Ini
+                        </button>
+
+                        <select id="nilai-matpel" onchange="renderNilaiSiswa()" class="px-2 py-1.5 bg-slate-50 border border-slate-200 rounded-lg text-xs font-bold text-slate-700">
+                            <option value="PRAKTEK IBADAH">PRAKTEK IBADAH</option>
+                            <option value="TAJWID">TAJWID</option>
+                            <option value="FIQIH">FIQIH</option>
+                            <option value="ASWAJA">ASWAJA</option>
+                            <option value="AL QURAN HADIST">AL QUR'AN HADIST</option>
+                            <option value="AKIDAH AKHLAK">AKIDAH AKHLAK</option>
+                            <option value="SKI">SKI</option>
+                            <option value="MABADI FIQIH">MABADI FIQIH</option>
+                            <option value="BAHASA ARAB">BAHASA ARAB</option>
+                            <option value="TAHFIDZ">TAHFIDZ</option>
+                        </select>
+                    </div>
                 </div>
                 <div id="nilai-siswa-card-container" class="space-y-3"></div>
             </div>
@@ -348,7 +356,7 @@
                     </div>
                     <hr class="border-teal-100">
                     
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 bg-white p-4 rounded-2xl border border-teal-100">
+                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-3 bg-white p-4 rounded-2xl border border-teal-100">
                         <div>
                             <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Pilih Kelas Target</label>
                             <select id="export-target-kelas" class="w-full px-2.5 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-semibold focus:outline-none"></select>
@@ -358,6 +366,21 @@
                             <select id="export-target-bulan" class="w-full px-2.5 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-semibold focus:outline-none">
                                 <option value="7">Juli</option><option value="8">Agustus</option><option value="9">September</option><option value="10">Oktober</option><option value="11">November</option><option value="12">Desember</option>
                                 <option value="1">Januari</option><option value="2">Februari</option><option value="3">Maret</option><option value="4">April</option><option value="5">Mei</option><option value="6">Juni</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-[10px] font-bold text-slate-500 uppercase mb-1">Pilih Mata Pelajaran</label>
+                            <select id="export-target-matpel" class="w-full px-2.5 py-2 bg-slate-50 border border-slate-200 rounded-lg text-xs font-semibold focus:outline-none">
+                                <option value="PRAKTEK IBADAH">PRAKTEK IBADAH</option>
+                                <option value="TAJWID">TAJWID</option>
+                                <option value="FIQIH">FIQIH</option>
+                                <option value="ASWAJA">ASWAJA</option>
+                                <option value="AL QURAN HADIST">AL QUR'AN HADIST</option>
+                                <option value="AKIDAH AKHLAK">AKIDAH AKHLAK</option>
+                                <option value="SKI">SKI</option>
+                                <option value="MABADI FIQIH">MABADI FIQIH</option>
+                                <option value="BAHASA ARAB">BAHASA ARAB</option>
+                                <option value="TAHFIDZ">TAHFIDZ</option>
                             </select>
                         </div>
                     </div>
@@ -556,7 +579,7 @@
                 { nama: "ADIBA KEISHA FATMAWATI", jk: "P" }, { nama: "AIDA FIQROTUL ANJANI", jk: "P" }, { nama: "AISYA HUMAIRA DZAKIYYA", jk: "P" }, { nama: "ANNISAH LUTFI ANWAR", jk: "P" }, { nama: "AQLAN DZIKRI ARKANA", jk: "L" }, { nama: "FAIZA ZAHRANI KHOIRUSWA", jk: "P" }, { nama: "GHUFRON YASID PURNOMO", jk: "L" }, { nama: "HERBYANSYAH CHOIRI RAMADHAN", jk: "L" }, { nama: "IQBAL SYAFIQ NUR AMANAH", jk: "L" }, { nama: "MAHARDIKA DIPA PAWESTRI", jk: "P" }, { nama: "MUHAMAD HAFIZ ALFARIZI", jk: "L" }, { nama: "MUHAMMAD AL FATIH HUSAINI", jk: "L" }, { nama: "MUHAMMAD IZZUDIN AL QASSAM PRABANDARU", jk: "L" }, { nama: "MUHAMMAD MIFTAHUL AKHYAR", jk: "L" }, { nama: "NATHAN AKSATA DANISWARA", jk: "L" }, { nama: "NGUFAIROH TSAMROTUL FARIDA", jk: "P" }, { nama: "RIZKY FAHRUR ROZY", jk: "L" }, { nama: "SHAKILA AILA ALESHA", jk: "P" }, { nama: "ZAHROTUL FUADAH", jk: "P" }
             ],
             "Kelas 5B": [
-                { nama: "ABYAN NAILUL AKHSAN", jk: "L" }, { nama: "ALIF ILHAM MAULANA", jk: "L" }, { nama: "AZKA IMAMI ZAINUL BILAD", jk: "L" }, { nama: "AZKIYA SAMHA SAUFA", jk: "P" }, { nama: "DIRGA AHLHAM WIRATAMA", jk: "L" }, { nama: "FARID MUHAMMAD AL FADHIL", jk: "L" }, { nama: "GHANEA ALMAEERA HENDRAWAN", jk: "P" }, { nama: "LUBNA AINAYA HARSHAFIYA", jk: "P" }, { nama: "MARK ANGEL AYUNDA SANDIFA", jk: "P" }, { nama: "MUHAMAD RAFA AZKA PUTRA", jk: "L" }, { nama: "MUHAMMAD HUSNY REGA MARHANI", jk: "L" }, { nama: "MUHAMMAD KHAN ALDRIAN", jk: "L" }, { nama: "MUHAMMAD SATYA PUTRANDHA", jk: "L" }, { nama: "NABILA SANGRILA ILIYIN", jk: "P" }, { nama: "NATHAN HAFIY ADHYASTHA", jk: "L" }, { nama: "NUHAIL ABID AL HAMID", jk: "L" }, { nama: "PUTRI MAHARANI AZZAHRA", jk: "P" }, { nama: "WAFI MAZIDA", jk: "P" }
+                { nama: "ABYAN NAILUL AKHSAN", jk: "L" }, { nama: "ALIF ILHAM MAULANA", jk: "L" }, { nama: "AZKA IMAMI ZAINUL BILAD", jk: "L" }, { nama: "AZKIYA SAMHA SAUFA", jk: "P" }, { nama: "DIRGA AHLHAM WIRATAMA", jk: "L" }, { nama: "FARID MUHAMMAD AL FADHIL", jk: "L" }, { nama: "GHANEA ALMAEERA HENDRAWAN", jk: "P" }, { nama: "LUBNA AINAYA HARSHAFIYA", jk: "P" }, { nama: "MARK ANGEL AYUNDA SANDIFA", jk: "P" }, { nama: "MUHAMAD RAFA AZKA PUTRA", jk: "L" }, { nama: "MUHAMMAD HUSNY REGA MARHANI", jk: "L" }, { nama: "MUHAMMAD KHAN ALDRIAN", jk: "L" }, { nama: "MUHAMMAD SATYA PUTRANDHA", jk: "L" }, { nama: "NABILA SANGRILA ILIYIN", jk: "P" }, { nama: "NATHAN HAFIY ADHYASTHA", jk: "L" }, { nama: "NUHAIL ABID AL HAMID", jk: "L" }, { nama: "PUTRI MAHARNI AZZAHRA", jk: "P" }, { nama: "WAFI MAZIDA", jk: "P" }
             ],
             "Kelas 6A": [
                 { nama: "AZKA FAEZYZA ROHMAN", jk: "L" }, { nama: "CHILYAH ACHSANA", jk: "P" }, { nama: "EDSEL KENZI PURWANTO", jk: "L" }, { nama: "FADHIL HIBBAN AL SAJID", jk: "L" }, { nama: "FAUZI ASKA NAUFAL", jk: "L" }, { nama: "HAYDAR TSAQIB ALMAYRI", jk: "L" }, { nama: "IZZATUL WAFIROH RAMADHANI", jk: "P" }, { nama: "JATRA ARFA FAZIO", jk: "L" }, { nama: "KINANTI AYU RIZKI", jk: "P" }, { nama: "MIKAYLA YUMNA NADHIFA", jk: "P" }, { nama: "MUHAMMAD ARTHA NUGRAHA", jk: "L" }, { nama: "RAFA FABIANSYA WIDIYANTO", jk: "L" }, { nama: "RIFFAT MAULANA IBRAHIM", jk: "L" }, { nama: "RIZWANDA DZACKYA ALVARO", jk: "L" }, { nama: "SAJIDA YUNIAR WIDYANTI", jk: "P" }, { nama: "SIRHAN SAHID SALADIN", jk: "L" }, { nama: "YASMINE UZMA KIRANA", jk: "P" }, { nama: "ZALZILATUL HIKMIYYA", jk: "P" }
@@ -593,7 +616,7 @@
         window.addEventListener('DOMContentLoaded', () => { 
             checkAutoLogin(); 
             window.addEventListener('popstate', function(event) {
-                if (sessionStorage.getItem('adm_session_active') === 'true') {
+                if (localStorage.getItem('adm_session_active') === 'true') {
                     if (activeTab !== 'dashboard') {
                         executeTabSwitch('dashboard', true, false);
                     }
@@ -613,7 +636,7 @@
 
         function forceResetAplikasi() {
             if (confirm("Aplikasi macet atau berhenti merespon? Kita akan menyegarkan ulang sistem. Seluruh data yang sudah Anda masukkan (Daftar Siswa, Nilai, Presensi) DIJAMIN TETAP AMAN DAN TIDAK HILANG. Lanjutkan?")) {
-                sessionStorage.removeItem('adm_session_active');
+                localStorage.removeItem('adm_session_active');
                 alert("Sistem navigasi berhasil disegarkan! Silakan masuk kembali.");
                 location.reload();
             }
@@ -655,7 +678,7 @@
         function saveToLocal(key) { localStorage.setItem(`enc_${key}`, encryptData(state[key])); updateDashboardWidgets(); }
 
         function checkAutoLogin() {
-            if (sessionStorage.getItem('adm_session_active') === 'true') {
+            if (localStorage.getItem('adm_session_active') === 'true') {
                 loadSessionData(); 
                 document.getElementById('page-login').classList.add('hidden'); 
                 document.getElementById('main-app').classList.remove('hidden');
@@ -680,20 +703,20 @@
             const expKelasEl = document.getElementById('export-target-kelas');
             if(!selectEl || !expKelasEl) return;
             
-            let tempSavedKelas = currentKelas;
-            selectEl.innerHTML = ""; expKelasEl.innerHTML = "";
             const ampu = state.biodata.kelasAmpu || ["Kelas 2A"];
-            
+            let savedKelas = localStorage.getItem('adm_last_selected_kelas');
+
+            if (savedKelas && ampu.includes(savedKelas)) {
+                currentKelas = savedKelas;
+            } else if (ampu.length > 0 && (!ampu.includes(currentKelas))) {
+                currentKelas = ampu[0];
+            }
+
+            selectEl.innerHTML = ""; expKelasEl.innerHTML = "";
             ampu.forEach(kls => { 
                 let opt = `<option value="${kls}">${kls.toUpperCase()}</option>`; 
                 selectEl.innerHTML += opt; expKelasEl.innerHTML += opt; 
             });
-            
-            if (isInitialLoad && ampu.length > 0) {
-                currentKelas = ampu[0];
-            } else if (ampu.includes(tempSavedKelas)) {
-                currentKelas = tempSavedKelas;
-            }
             
             selectEl.value = currentKelas; 
             expKelasEl.value = currentKelas; 
@@ -704,6 +727,7 @@
             const gKls = document.getElementById('global-kelas');
             if(!gKls) return;
             currentKelas = gKls.value;
+            localStorage.setItem('adm_last_selected_kelas', currentKelas);
             document.querySelectorAll('.id-current-view-kelas').forEach(el => el.innerText = currentKelas);
             executeTabSwitch(activeTab, true, false);
         }
@@ -715,7 +739,7 @@
             let storedAuth = decryptData(localStorage.getItem('enc_auth'), { username: "admin", password: "123" });
             
             if(nameInput === storedAuth.username.toLowerCase() && passInput === storedAuth.password) {
-                sessionStorage.setItem('adm_session_active', 'true'); 
+                localStorage.setItem('adm_session_active', 'true'); 
                 loadSessionData(); 
                 document.getElementById('page-login').classList.add('hidden'); 
                 document.getElementById('main-app').classList.remove('hidden');
@@ -772,7 +796,7 @@
                 };
                 const assertion = await navigator.credentials.get({ publicKey });
                 if (assertion) {
-                    sessionStorage.setItem('adm_session_active', 'true'); 
+                    localStorage.setItem('adm_session_active', 'true'); 
                     loadSessionData(); 
                     document.getElementById('page-login').classList.add('hidden'); 
                     document.getElementById('main-app').classList.remove('hidden');
@@ -784,9 +808,11 @@
         }
         
         function handleLogout() { 
-            sessionStorage.removeItem('adm_session_active'); 
-            document.getElementById('page-login').classList.remove('hidden');
-            document.getElementById('main-app').classList.add('hidden');
+            if(confirm("Apakah Anda yakin ingin keluar dari aplikasi?")) {
+                localStorage.removeItem('adm_session_active'); 
+                document.getElementById('page-login').classList.remove('hidden');
+                document.getElementById('main-app').classList.add('hidden');
+            }
         }
 
         function switchTab(tabId) { executeTabSwitch(tabId, true, true); }
@@ -896,11 +922,51 @@
                 if(siswaItem && siswaItem.nama) {
                     let key = `${currentKelas}_${siswaItem.nama}_${matpel}`; 
                     let scores = state.nilai[key] || { h1:'', h2:'', h3:'', mid:'', pas:'' };
-                    container.innerHTML += `<div class="bg-white p-3 border border-slate-200 rounded-xl space-y-2"><div class="text-xs font-bold text-slate-700">${sIdx+1}. ${siswaItem.nama}</div><div class="grid grid-cols-5 gap-1"><input type="number" placeholder="H1" value="${scores.h1}" oninput="saveNilai('${siswaItem.nama}','${matpel}','h1',this.value)" class="border border-slate-200 text-center text-xs p-1 rounded"><input type="number" placeholder="H2" value="${scores.h2}" oninput="saveNilai('${siswaItem.nama}','${matpel}','h2',this.value)" class="border border-slate-200 text-center text-xs p-1 rounded"><input type="number" placeholder="H3" value="${scores.h3}" oninput="saveNilai('${siswaItem.nama}','${matpel}','h3',this.value)" class="border border-slate-200 text-center text-xs p-1 rounded"><input type="number" placeholder="STS" value="${scores.mid}" oninput="saveNilai('${siswaItem.nama}','${matpel}','mid',this.value)" class="border border-slate-200 text-center text-xs p-1 rounded"><input type="number" placeholder="SAS" value="${scores.pas}" oninput="saveNilai('${siswaItem.nama}','${matpel}','pas',this.value)" class="border border-slate-200 text-center text-xs p-1 rounded"></div></div>`;
+                    container.innerHTML += `<div class="bg-white p-3 border border-slate-200 rounded-xl space-y-2">
+                        <div class="flex justify-between items-center">
+                            <div class="text-xs font-bold text-slate-700">${sIdx+1}. ${siswaItem.nama}</div>
+                            <button onclick="resetNilaiSiswaSatu('${siswaItem.nama}')" title="Kosongkan Nilai Siswa Ini" class="text-slate-400 hover:text-red-500 text-[11px] font-semibold cursor-pointer transition-all">
+                                <i class="fa-solid fa-rotate-left mr-0.5"></i> Reset
+                            </button>
+                        </div>
+                        <div class="grid grid-cols-5 gap-1">
+                            <input type="number" placeholder="H1" value="${scores.h1}" oninput="saveNilai('${siswaItem.nama}','${matpel}','h1',this.value)" class="border border-slate-200 text-center text-xs p-1 rounded">
+                            <input type="number" placeholder="H2" value="${scores.h2}" oninput="saveNilai('${siswaItem.nama}','${matpel}','h2',this.value)" class="border border-slate-200 text-center text-xs p-1 rounded">
+                            <input type="number" placeholder="H3" value="${scores.h3}" oninput="saveNilai('${siswaItem.nama}','${matpel}','h3',this.value)" class="border border-slate-200 text-center text-xs p-1 rounded">
+                            <input type="number" placeholder="STS" value="${scores.mid}" oninput="saveNilai('${siswaItem.nama}','${matpel}','mid',this.value)" class="border border-slate-200 text-center text-xs p-1 rounded">
+                            <input type="number" placeholder="SAS" value="${scores.pas}" oninput="saveNilai('${siswaItem.nama}','${matpel}','pas',this.value)" class="border border-slate-200 text-center text-xs p-1 rounded">
+                        </div>
+                    </div>`;
                 }
             });
         }
         function saveNilai(nama, matpel, field, val) { let key = `${currentKelas}_${nama}_${matpel}`; if(!state.nilai[key]) state.nilai[key] = { h1:'', h2:'', h3:'', mid:'', pas:'' }; state.nilai[key][field] = val; saveToLocal('nilai'); }
+
+        function resetNilaiMatpelTerpilih() {
+            const nMat = document.getElementById('nilai-matpel');
+            if(!nMat) return;
+            const matpel = nMat.value;
+            if (confirm(`Apakah Anda yakin ingin MENGHAPUS / RESET seluruh nilai mata pelajaran "${matpel}" untuk ${currentKelas}?\n\nSemua nilai yang sudah dimasukkan pada mapel ini akan dikosongkan.`)) {
+                (state.siswa[currentKelas] || []).forEach(siswaItem => {
+                    if (siswaItem && siswaItem.nama) {
+                        let key = `${currentKelas}_${siswaItem.nama}_${matpel}`;
+                        delete state.nilai[key];
+                    }
+                });
+                saveToLocal('nilai');
+                renderNilaiSiswa();
+            }
+        }
+
+        function resetNilaiSiswaSatu(nama) {
+            const nMat = document.getElementById('nilai-matpel');
+            if(!nMat) return;
+            const matpel = nMat.value;
+            let key = `${currentKelas}_${nama}_${matpel}`;
+            delete state.nilai[key];
+            saveToLocal('nilai');
+            renderNilaiSiswa();
+        }
 
         function switchSubTahfidz(mode) {
             subTahfidzMode = mode;
@@ -965,7 +1031,15 @@
                                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
                                     <div><label class="block text-[10px] font-bold text-slate-500 uppercase">Materi/Surah Dari Guru</label><input type="text" placeholder="Contoh: QS. Al-Mulk: 1-5" value="${data.materiGuru}" oninput="saveSetoran('${siswaItem.nama}','materiGuru',this.value)" class="w-full border border-slate-200 px-2 py-1.5 rounded-lg text-xs bg-slate-50"></div>
                                     <div><label class="block text-[10px] font-bold text-slate-500 uppercase">Tanggal Setoran Anak</label><input type="date" value="${data.tanggalSetoran}" onchange="saveSetoran('${siswaItem.nama}','tanggalSetoran',this.value)" class="w-full border border-slate-200 px-2 py-1.5 rounded-lg text-xs bg-slate-50"></div>
-                                    <div><label class="block text-[10px] font-bold text-slate-500 uppercase">Predikat Kelancaran</label><select onchange="saveSetoran('${siswaItem.nama}','nilaiSetoran',this.value)" class="w-full border border-slate-200 px-2 py-1.5 rounded-lg text-xs bg-slate-50 font-semibold"><option value="Sangat Lancar" ${data.nilaiSetoran==='Sangat Lancar'?'selected':''}>🥇 Sangat Lancar</option><option value="Lancar" ${data.nilaiSetoran==='Lancar'?'selected':''}>🥈 Lancar</option><option value="Cukup Lancar" ${data.nilaiSetoran==='Cukup Lancar'?'selected':''}>🥉 Cukup Lancar</option><option value="Mengulang" ${data.nilaiSetoran==='Mengulang'?'selected':''}>⚠️ Mengulang</option></select></div>
+                                    <div><label class="block text-[10px] font-bold text-slate-500 uppercase">Predikat Kelancaran</label>
+                                        <select onchange="saveSetoran('${siswaItem.nama}','nilaiSetoran',this.value)" class="w-full border border-slate-200 px-2 py-1.5 rounded-lg text-xs bg-slate-50 font-semibold">
+                                            <option value="Sangat Lancar" ${data.nilaiSetoran==='Sangat Lancar'?'selected':''}>🥇 Sangat Lancar</option>
+                                            <option value="Lancar" ${data.nilaiSetoran==='Lancar'?'selected':''}>🥈 Lancar</option>
+                                            <option value="Cukup Lancar" ${data.nilaiSetoran==='Cukup Lancar'?'selected':''}>🥉 Cukup Lancar</option>
+                                            <option value="Mengulang" ${data.nilaiSetoran==='Mengulang'?'selected':''}>⚠️ Mengulang</option>
+                                            <option value="Belum Hafalan" ${data.nilaiSetoran==='Belum Hafalan'?'selected':''}>❌ Belum Hafalan</option>
+                                        </select>
+                                    </div>
                                 </div>
                             </div>`;
                     }
@@ -1098,7 +1172,7 @@
             let htmlTable = "";
             let judul = "";
             const tahun = (targetBln >= 7) ? 2026 : 2027;
-            const matpel = document.getElementById('nilai-matpel')?.value || 'TAJWID';
+            const matpel = document.getElementById('export-target-matpel')?.value || document.getElementById('nilai-matpel')?.value || 'TAJWID';
 
             let guruCetak = state.biodata.nama || 'Belum Diatur';
             let nipCetak = state.biodata.nip || '';
