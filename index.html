@@ -320,7 +320,14 @@
             <!-- 5. HAFALAN TAHFIDZ & PRAKTEK IBADAH -->
             <div id="tab-tahfidz-siswa" class="morph-page space-y-4">
                 <div class="bg-white p-3 rounded-2xl border border-fuchsia-200 shadow-sm flex flex-col gap-2">
-                    <h3 class="text-xs font-bold uppercase text-slate-700"><i class="fa-solid fa-mosque text-fuchsia-600 mr-1"></i> Kontrol Hafalan & Ibadah (<span class="id-current-view-kelas">-</span>)</h3>
+                    <div class="flex justify-between items-center flex-wrap gap-2">
+                        <h3 class="text-xs font-bold uppercase text-slate-700"><i class="fa-solid fa-mosque text-fuchsia-600 mr-1"></i> Kontrol Hafalan & Ibadah (<span class="id-current-view-kelas">-</span>)</h3>
+                        
+                        <!-- TOMBOL RESET GLOBAL SUB-MENU HAFALAN -->
+                        <button onclick="resetSubTahfidzTerpilih()" class="px-3 py-1.5 bg-red-50 hover:bg-red-100 text-red-600 border border-red-200 text-xs font-bold rounded-lg transition-all cursor-pointer flex items-center gap-1.5">
+                            <i class="fa-solid fa-rotate-left"></i> Reset Data Sub-Menu Ini
+                        </button>
+                    </div>
                     
                     <div class="grid grid-cols-1 sm:grid-cols-3 gap-2 border-t pt-2">
                         <button id="btn-sub-tahfidz" onclick="switchSubTahfidz('tahfidz')" class="py-2 rounded-xl text-xs font-bold bg-fuchsia-600 text-white transition-all cursor-pointer">1. Progres Hafalan Qur'an</button>
@@ -989,6 +996,38 @@
             renderTahfidzSiswa();
         }
 
+        function resetSubTahfidzTerpilih() {
+            let label = subTahfidzMode === 'tahfidz' ? 'Progres Hafalan Qur\'an' : (subTahfidzMode === 'praktek' ? 'Praktek Ibadah & Sholat' : 'Setoran Hafalan Baru');
+            if (confirm(`Apakah Anda yakin ingin MENGHAPUS / RESET seluruh data "${label}" untuk ${currentKelas}?\n\nCatatan pada sub-menu ini akan dikosongkan.`)) {
+                (state.siswa[currentKelas] || []).forEach(siswaItem => {
+                    if (siswaItem && siswaItem.nama) {
+                        let subKey = subTahfidzMode === 'tahfidz' ? 'Tahfidz' : (subTahfidzMode === 'praktek' ? 'PraktekIbadah' : 'Setoran');
+                        let key = `${currentKelas}_${siswaItem.nama}_${subKey}`;
+                        if (subTahfidzMode === 'tahfidz') delete state.tahfidz[key];
+                        else if (subTahfidzMode === 'praktek') delete state.ibadah[key];
+                        else if (subTahfidzMode === 'setoran') delete state.setoran[key];
+                    }
+                });
+                if (subTahfidzMode === 'tahfidz') saveToLocal('tahfidz');
+                else if (subTahfidzMode === 'praktek') saveToLocal('ibadah');
+                else if (subTahfidzMode === 'setoran') saveToLocal('setoran');
+                renderTahfidzSiswa();
+            }
+        }
+
+        function resetTahfidzSiswaSatu(nama) {
+            let subKey = subTahfidzMode === 'tahfidz' ? 'Tahfidz' : (subTahfidzMode === 'praktek' ? 'PraktekIbadah' : 'Setoran');
+            let key = `${currentKelas}_${nama}_${subKey}`;
+            if (subTahfidzMode === 'tahfidz') delete state.tahfidz[key];
+            else if (subTahfidzMode === 'praktek') delete state.ibadah[key];
+            else if (subTahfidzMode === 'setoran') delete state.setoran[key];
+            
+            if (subTahfidzMode === 'tahfidz') saveToLocal('tahfidz');
+            else if (subTahfidzMode === 'praktek') saveToLocal('ibadah');
+            else if (subTahfidzMode === 'setoran') saveToLocal('setoran');
+            renderTahfidzSiswa();
+        }
+
         function renderTahfidzSiswa() {
             const container = document.getElementById('tahfidz-siswa-card-container'); 
             if(!container) return;
@@ -1003,7 +1042,12 @@
                         let data = state.tahfidz[key] || { juzzSurah: '', status: 'Lancar', catatan: '' };
                         container.innerHTML += `
                             <div class="bg-white p-4 border border-slate-200 rounded-2xl shadow-sm space-y-3">
-                                <div class="text-xs font-bold text-slate-800">${sIdx+1}. ${siswaItem.nama}</div>
+                                <div class="flex justify-between items-center">
+                                    <div class="text-xs font-bold text-slate-800">${sIdx+1}. ${siswaItem.nama}</div>
+                                    <button onclick="resetTahfidzSiswaSatu('${siswaItem.nama}')" title="Reset Siswa Ini" class="text-slate-400 hover:text-red-500 text-[11px] font-semibold cursor-pointer transition-all">
+                                        <i class="fa-solid fa-rotate-left mr-0.5"></i> Reset
+                                    </button>
+                                </div>
                                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
                                     <div><label class="block text-[10px] font-bold text-slate-500 uppercase">Surah & Ayat Terakhir</label><input type="text" placeholder="Contoh: An-Naba' 1-20" value="${data.juzzSurah}" oninput="saveTahfidz('${siswaItem.nama}','juzzSurah',this.value)" class="w-full border border-slate-200 px-2 py-1.5 rounded-lg text-xs bg-slate-50"></div>
                                     <div><label class="block text-[10px] font-bold text-slate-500 uppercase">Status Kelancaran</label><select onchange="saveTahfidz('${siswaItem.nama}','status',this.value)" class="w-full border border-slate-200 px-2 py-1.5 rounded-lg text-xs bg-slate-50 font-semibold"><option value="Lancar" ${data.status==='Lancar'?'selected':''}>🟢 Lancar</option><option value="Cukup Lancar" ${data.status==='Cukup Lancar'?'selected':''}>🟡 Cukup Lancar</option><option value="Perlu Mengulang" ${data.status==='Perlu Mengulang'?'selected':''}>🔴 Perlu Mengulang</option></select></div>
@@ -1015,7 +1059,12 @@
                         let data = state.ibadah[key] || { materi: '', predikat: 'Mampu', note: '' };
                         container.innerHTML += `
                             <div class="bg-white p-4 border border-fuchsia-200 rounded-2xl shadow-sm space-y-3">
-                                <div class="text-xs font-bold text-slate-800">${sIdx+1}. ${siswaItem.nama}</div>
+                                <div class="flex justify-between items-center">
+                                    <div class="text-xs font-bold text-slate-800">${sIdx+1}. ${siswaItem.nama}</div>
+                                    <button onclick="resetTahfidzSiswaSatu('${siswaItem.nama}')" title="Reset Siswa Ini" class="text-slate-400 hover:text-red-500 text-[11px] font-semibold cursor-pointer transition-all">
+                                        <i class="fa-solid fa-rotate-left mr-0.5"></i> Reset
+                                    </button>
+                                </div>
                                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
                                     <div><label class="block text-[10px] font-bold text-slate-500 uppercase">Materi Praktek / Gerakan</label><input type="text" placeholder="Contoh: Praktek Sholat Subuh" value="${data.materi}" oninput="saveIbadah('${siswaItem.nama}','materi',this.value)" class="w-full border border-slate-200 px-2 py-1.5 rounded-lg text-xs bg-slate-50"></div>
                                     <div><label class="block text-[10px] font-bold text-slate-500 uppercase">Kriteria Capaian Anak</label><select onchange="saveIbadah('${siswaItem.nama}','predikat',this.value)" class="w-full border border-slate-200 px-2 py-1.5 rounded-lg text-xs bg-slate-50 font-semibold"><option value="Mampu" ${data.predikat==='Mampu'?'selected':''}>⭐ Mampu (Lulus)</option><option value="Cukup Mampu" ${data.predikat==='Cukup Mampu'?'selected':''}>⛅ Cukup Mampu</option><option value="Belum Mampu" ${data.predikat==='Belum Mampu'?'selected':''}>❌ Belum Mampu</option></select></div>
@@ -1024,20 +1073,26 @@
                             </div>`;
                     } else if(subTahfidzMode === 'setoran') {
                         let key = `${currentKelas}_${siswaItem.nama}_Setoran`;
-                        let data = state.setoran[key] || { materiGuru: '', tanggalSetoran: '', nilaiSetoran: 'Lancar' };
+                        // OTOMATIS SET DEFAULT PREDIKAT TO "Belum Hafalan"
+                        let data = state.setoran[key] || { materiGuru: '', tanggalSetoran: '', nilaiSetoran: 'Belum Hafalan' };
                         container.innerHTML += `
                             <div class="bg-white p-4 border border-orange-200 rounded-2xl shadow-sm space-y-3">
-                                <div class="text-xs font-bold text-slate-800">${sIdx+1}. ${siswaItem.nama}</div>
+                                <div class="flex justify-between items-center">
+                                    <div class="text-xs font-bold text-slate-800">${sIdx+1}. ${siswaItem.nama}</div>
+                                    <button onclick="resetTahfidzSiswaSatu('${siswaItem.nama}')" title="Reset Siswa Ini" class="text-slate-400 hover:text-red-500 text-[11px] font-semibold cursor-pointer transition-all">
+                                        <i class="fa-solid fa-rotate-left mr-0.5"></i> Reset
+                                    </button>
+                                </div>
                                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
                                     <div><label class="block text-[10px] font-bold text-slate-500 uppercase">Materi/Surah Dari Guru</label><input type="text" placeholder="Contoh: QS. Al-Mulk: 1-5" value="${data.materiGuru}" oninput="saveSetoran('${siswaItem.nama}','materiGuru',this.value)" class="w-full border border-slate-200 px-2 py-1.5 rounded-lg text-xs bg-slate-50"></div>
                                     <div><label class="block text-[10px] font-bold text-slate-500 uppercase">Tanggal Setoran Anak</label><input type="date" value="${data.tanggalSetoran}" onchange="saveSetoran('${siswaItem.nama}','tanggalSetoran',this.value)" class="w-full border border-slate-200 px-2 py-1.5 rounded-lg text-xs bg-slate-50"></div>
                                     <div><label class="block text-[10px] font-bold text-slate-500 uppercase">Predikat Kelancaran</label>
                                         <select onchange="saveSetoran('${siswaItem.nama}','nilaiSetoran',this.value)" class="w-full border border-slate-200 px-2 py-1.5 rounded-lg text-xs bg-slate-50 font-semibold">
+                                            <option value="Belum Hafalan" ${data.nilaiSetoran==='Belum Hafalan'?'selected':''}>❌ Belum Hafalan</option>
                                             <option value="Sangat Lancar" ${data.nilaiSetoran==='Sangat Lancar'?'selected':''}>🥇 Sangat Lancar</option>
                                             <option value="Lancar" ${data.nilaiSetoran==='Lancar'?'selected':''}>🥈 Lancar</option>
                                             <option value="Cukup Lancar" ${data.nilaiSetoran==='Cukup Lancar'?'selected':''}>🥉 Cukup Lancar</option>
                                             <option value="Mengulang" ${data.nilaiSetoran==='Mengulang'?'selected':''}>⚠️ Mengulang</option>
-                                            <option value="Belum Hafalan" ${data.nilaiSetoran==='Belum Hafalan'?'selected':''}>❌ Belum Hafalan</option>
                                         </select>
                                     </div>
                                 </div>
@@ -1048,7 +1103,7 @@
         }
         function saveTahfidz(nama, field, val) { let key = `${currentKelas}_${nama}_Tahfidz`; if(!state.tahfidz[key]) state.tahfidz[key] = { juzzSurah: '', status: 'Lancar', catatan: '' }; state.tahfidz[key][field] = val; saveToLocal('tahfidz'); }
         function saveIbadah(nama, field, val) { let key = `${currentKelas}_${nama}_PraktekIbadah`; if(!state.ibadah[key]) state.ibadah[key] = { materi: '', predikat: 'Mampu', note: '' }; state.ibadah[key][field] = val; saveToLocal('ibadah'); }
-        function saveSetoran(nama, field, val) { let key = `${currentKelas}_${nama}_Setoran`; if(!state.setoran[key]) state.setoran[key] = { materiGuru: '', tanggalSetoran: '', nilaiSetoran: 'Lancar' }; state.setoran[key][field] = val; saveToLocal('setoran'); }
+        function saveSetoran(nama, field, val) { let key = `${currentKelas}_${nama}_Setoran`; if(!state.setoran[key]) state.setoran[key] = { materiGuru: '', tanggalSetoran: '', nilaiSetoran: 'Belum Hafalan' }; state.setoran[key][field] = val; saveToLocal('setoran'); }
 
         function renderJurnal() {
             const jBln = document.getElementById('jurnal-bulan');
@@ -1268,7 +1323,7 @@
                     </thead>
                     <tbody>`;
                 listSiswa.forEach((s, i) => {
-                    let data = state.setoran[`${targetKls}_${s.nama}_Setoran`] || { materiGuru: '', tanggalSetoran: '', nilaiSetoran: '-' };
+                    let data = state.setoran[`${targetKls}_${s.nama}_Setoran`] || { materiGuru: '', tanggalSetoran: '', nilaiSetoran: 'Belum Hafalan' };
                     htmlTable += `
                         <tr>
                             <td align="center" style="padding:5px;">${i+1}</td>
